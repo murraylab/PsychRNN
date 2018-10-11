@@ -2,9 +2,9 @@ import setuptools
 from distutils.core import setup
 
 setup(
-    name='Sisyphus',
+    name='PsychRNN',
     version='0.9dev',
-    packages=['sisyphus2', 'sisyphus2.tasks', 'sisyphus2.backend', 'sisyphus2.backend.models'],
+    packages=['psychrnn', 'psychrnn.tasks', 'psychrnn.backend', 'psychrnn.backend.models'],
     license='MIT',
     long_description=open('README.md').read(),
 
@@ -12,6 +12,6 @@ setup(
     author_email="daniel.ehrlich@yale.edu",
     description="Easy-to-use package for the modeling and analysis of neural network dynamics, directed towards cognitive neuroscientists.",
     keywords="neuroscience, modeling, analysis, neural networks",
-    url="https://github.com/dbehrlich/sisyphus2/tree/networks-branch",
+    url="https://github.com/dbehrlich/PsychRNN",
 
 )
