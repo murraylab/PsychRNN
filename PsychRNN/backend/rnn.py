@@ -1,11 +1,12 @@
+from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
 from time import time
-from regularizations import Regularizer
-from loss_functions import LossFunction
-from initializations import WeightInitializer, GaussianSpectralRadius
+from psychrnn.backend.regularizations import Regularizer
+from psychrnn.backend.loss_functions import LossFunction
+from psychrnn.backend.initializations import WeightInitializer, GaussianSpectralRadius
 
 
 class RNN(object):
@@ -301,11 +302,11 @@ class RNN(object):
         # Training loop
         # --------------------------------------------------
         epoch = 1
-        batch_size = trial_batch_generator.next()[0].shape[0]
+        batch_size = next(trial_batch_generator)[0].shape[0]
         losses = []
 
         while epoch * batch_size < training_iters:
-            batch_x, batch_y, output_mask = trial_batch_generator.next()
+            batch_x, batch_y, output_mask = next(trial_batch_generator)
             self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
             # --------------------------------------------------
             # Output batch loss
