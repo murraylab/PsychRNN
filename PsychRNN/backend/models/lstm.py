@@ -1,4 +1,4 @@
-from sisyphus2.backend.rnn import RNN
+from psychrnn.backend.rnn import RNN
 import tensorflow as tf
 
 
