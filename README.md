@@ -23,21 +23,21 @@ For Demos:
 
 ### Installation
 
-git clone -b networks-branch https://github.com/dbehrlich/sisyphus2.git  
+git clone https://github.com/dbehrlich/PsychRNN.git   
 python setup.py install
 
 #### Alternative Install
 
-pip install **
+pip install PsychRNN
 
 
 ## 17 Lines Introduction
 
 A minimal introduction to our package. In this simple introduction you can generate a new recurrent neural network model, train that model on the random dot motion discrimination task, and plot out an example output in just 17 lines.
 
-	import sisyphus2  
-	from sisyphus2.tasks import rdm as rd  
-	from sisyphus2.backend.models.basic import Basic  
+	import psychrnn  
+	from psychrnn.tasks import rdm as rd  
+	from psychrnn.backend.models.basic import Basic  
 	import tensorflow as tf  
 
 	from matplotlib import pyplot as plt  
@@ -60,10 +60,11 @@ A minimal introduction to our package. In this simple introduction you can gener
 
 	model.destruct()
 
+Code for this example can be found in "Minimal_Example.ipynb"
 
 ## Demonstration Notebook
 
-For a more complete tour of training and model parameters see the RDM.ipynb notebook.
+For a more complete tour of training and model parameters see the "RDM.ipynb" notebook.
 
 
 ## Writing a New Task
