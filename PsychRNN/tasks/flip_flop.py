@@ -1,3 +1,5 @@
+from __future__ import division
+
 from task import Task
 import numpy as np
 

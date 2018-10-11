@@ -1,3 +1,5 @@
+from __future__ import division
+
 from psychrnn.backend.rnn import RNN
 import tensorflow as tf
 
