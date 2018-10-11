@@ -4,9 +4,9 @@ from __future__ import print_function
 import tensorflow as tf
 import numpy as np
 from time import time
-from regularizations import Regularizer
-from loss_functions import LossFunction
-from initializations import WeightInitializer, GaussianSpectralRadius
+from psychrnn.backend.regularizations import Regularizer
+from psychrnn.backend.loss_functions import LossFunction
+from psychrnn.backend.initializations import WeightInitializer, GaussianSpectralRadius
 
 
 class RNN(object):
