@@ -3,8 +3,11 @@ from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
+
+import sys
 from time import time
 from os import makedirs, path
+
 from psychrnn.backend.regularizations import Regularizer
 from psychrnn.backend.loss_functions import LossFunction
 from psychrnn.backend.initializations import WeightInitializer, GaussianSpectralRadius
@@ -278,7 +281,10 @@ class RNN(object):
         # Make weights folder if it doesn't already exist.
         # --------------------------------------------------
         if save_weights_path != None:
-            makedirs(path.dirname(save_weights_path))
+            if sys.version_info >= 3:
+                makedirs(path.dirname(save_weights_path), exist_ok = True)
+            else:
+                makedirs(path.dirname(save_weights_path))
 
         # --------------------------------------------------
         # Compute gradients
