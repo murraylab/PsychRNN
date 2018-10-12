@@ -1,4 +1,6 @@
-from task import Task
+from __future__ import division
+
+from psychrnn.tasks.task import Task
 import numpy as np
 
 

@@ -1,11 +1,16 @@
+from __future__ import division
 from __future__ import print_function
 
 import tensorflow as tf
 import numpy as np
+
+import sys
 from time import time
-from regularizations import Regularizer
-from loss_functions import LossFunction
-from initializations import WeightInitializer, GaussianSpectralRadius
+from os import makedirs, path
+
+from psychrnn.backend.regularizations import Regularizer
+from psychrnn.backend.loss_functions import LossFunction
+from psychrnn.backend.initializations import WeightInitializer, GaussianSpectralRadius
 
 
 class RNN(object):
@@ -273,6 +278,15 @@ class RNN(object):
         clip_grads = train_params.get('clip_grads', True)
 
         # --------------------------------------------------
+        # Make weights folder if it doesn't already exist.
+        # --------------------------------------------------
+        if save_weights_path != None:
+            if sys.version_info.major >= 3:
+                makedirs(path.dirname(save_weights_path), exist_ok = True)
+            else:
+                makedirs(path.dirname(save_weights_path))
+
+        # --------------------------------------------------
         # Compute gradients
         # --------------------------------------------------
         grads = optimizer.compute_gradients(self.reg_loss)
@@ -301,11 +315,11 @@ class RNN(object):
         # Training loop
         # --------------------------------------------------
         epoch = 1
-        batch_size = trial_batch_generator.next()[0].shape[0]
+        batch_size = next(trial_batch_generator)[0].shape[0]
         losses = []
 
         while epoch * batch_size < training_iters:
-            batch_x, batch_y, output_mask = trial_batch_generator.next()
+            batch_x, batch_y, output_mask = next(trial_batch_generator)
             self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
             # --------------------------------------------------
             # Output batch loss
