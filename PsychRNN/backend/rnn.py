@@ -281,9 +281,7 @@ class RNN(object):
         # Make weights folder if it doesn't already exist.
         # --------------------------------------------------
         if save_weights_path != None:
-            if sys.version_info.major >= 3:
-                makedirs(path.dirname(save_weights_path), exist_ok = True)
-            else:
+            if path.dirname(save_weights_path) != "" and not path.exists(path.dirname(save_weights_path)):
                 makedirs(path.dirname(save_weights_path))
 
         # --------------------------------------------------
