@@ -4,6 +4,7 @@ from __future__ import print_function
 import tensorflow as tf
 import numpy as np
 from time import time
+from os import makedirs, path
 from psychrnn.backend.regularizations import Regularizer
 from psychrnn.backend.loss_functions import LossFunction
 from psychrnn.backend.initializations import WeightInitializer, GaussianSpectralRadius
@@ -272,6 +273,12 @@ class RNN(object):
         optimizer = train_params.get('optimizer',
                                      tf.train.AdamOptimizer(learning_rate=learning_rate))
         clip_grads = train_params.get('clip_grads', True)
+
+        # --------------------------------------------------
+        # Make weights folder if it doesn't already exist.
+        # --------------------------------------------------
+        if save_weights_path != None:
+            makedirs(path.dirname(save_weights_path))
 
         # --------------------------------------------------
         # Compute gradients
