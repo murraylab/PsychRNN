@@ -14,7 +14,7 @@ Code is written and upkept by: @davidbrandfonbrener @dbehrlic @ABAtanasov @syncr
 
 - Numpy
 - Tensorflow
-- Python=2.7
+- Python=2.7 or 3.6
 
 For Demos:
 - Jupyter
@@ -23,7 +23,8 @@ For Demos:
 
 ### Installation
 
-git clone https://github.com/dbehrlich/PsychRNN.git   
+git clone https://github.com/dbehrlich/PsychRNN.git
+cd PsychRNN   
 python setup.py install
 
 #### Alternative Install
@@ -54,7 +55,7 @@ A minimal introduction to our package. In this simple introduction you can gener
 	model.build()  
 	model.train(gen)
 
-	x,_,_ = gen.next()
+	x,_,_ = next(gen)
 
 	plt.plot(model.test(x)[0][0,:,:])
 
@@ -161,7 +162,7 @@ New models can be added by extending the RNN superclass, as in our examples of "
 
 ## Further Extensibility
 
-If you with to modify weight initializations, loss functions or regularizations it is as simple as adding an additional class to "initializations.py" describing your preferred initial weight patterns or a single function to "loss_functions.py" or "regularizations.py".
+If you wish to modify weight initializations, loss functions or regularizations it is as simple as adding an additional class to "initializations.py" describing your preferred initial weight patterns or a single function to "loss_functions.py" or "regularizations.py".
 
 ### Backend
 
