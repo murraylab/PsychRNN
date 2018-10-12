@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name='PsychRNN',
-    version='0.6dev',
+    version='0.7dev',
     packages=['psychrnn', 'psychrnn.tasks', 'psychrnn.backend', 'psychrnn.backend.models'],
     license='MIT',
     long_description=open('README.md').read(),
