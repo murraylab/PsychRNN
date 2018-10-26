@@ -1,4 +1,4 @@
 import pytest
 
-def test_basic:
+def test_basic():
 	assert True
