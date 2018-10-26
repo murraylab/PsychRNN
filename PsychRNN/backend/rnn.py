@@ -245,8 +245,7 @@ class RNN(object):
 
         pass
 
-    def save(self, save_path):
-
+    def get_weights(self):
         weights_dict = dict()
 
         for var in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES):
@@ -254,6 +253,18 @@ class RNN(object):
             if var.name.endswith(':0') and var.name.startswith(self.name):
                 name = var.name[len(self.name):-2]
                 weights_dict.update({name: var.eval(session=self.sess)})
+        return weights_dict
+
+    def print_weights(self):
+        if not self.is_initialized:
+            print("No weights to print yet -- model has not yet been initialized.")
+        else:
+            print(self.get_weights())
+        return
+
+    def save(self, save_path):
+
+        weights_dict = self.get_weights()
 
         np.savez(save_path, **weights_dict)
 
