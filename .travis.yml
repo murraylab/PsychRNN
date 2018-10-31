@@ -12,7 +12,7 @@ install:
     elif [[ "$TRAVIS_PYTHON_VERSION" == "3.4" ]]; then
       pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.11.0-cp36-cp36m-linux_x86_64.whl;
     fi
-  - python setup.py install
+  - pip install .
 
 script:
   - pytest
