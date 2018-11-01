@@ -15,7 +15,7 @@ def get_params():
 
 def test_rnn():
 	params = get_params()
-	RNN(get_params)
+	RNN(params)
 	
 
 def test_build():
