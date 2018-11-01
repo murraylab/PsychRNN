@@ -14,8 +14,13 @@ def get_params():
 	return params
 
 def test_rnn():
+	# params = {}
+	# with pytest.raises(KeyError) as excinfo:
+	# 	RNN(params)
 	params = get_params()
 	RNN(params)
+
+	# test throws errors if insufficient info given
 	
 
 def test_build():
