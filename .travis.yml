@@ -4,9 +4,6 @@ python:
   - "2.7"
   - "3.6"
 
-# sudo: required
-# dist: trusty
-
 install:
   - pip install numpy
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
