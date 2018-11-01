@@ -14,9 +14,10 @@ def get_params():
 	return params
 
 def test_rnn():
-	# params = {}
-	# with pytest.raises(KeyError) as excinfo:
-	# 	RNN(params)
+	params = {}
+	with pytest.raises(KeyError) as excinfo:
+		RNN(params)
+	assert 'name' in str(excinfo.value)
 	params = get_params()
 	RNN(params)
 
