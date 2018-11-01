@@ -8,16 +8,6 @@ sudo: required
 dist: trusty
 
 install:
-  # - wget http://repo.continuum.io/miniconda/Miniconda-3.7.3-Linux-x86_64.sh -O miniconda.sh;
-  # - bash miniconda.sh -b -p $HOME/miniconda
-  # - export PATH="$HOME/miniconda/bin:$PATH"
-  # - hash -r
-  # - conda config --set always_yes yes --set changeps1 no
-  # - conda update -q conda
-  # - conda info -a
-  # - conda create --yes -q -n test python=$TRAVIS_PYTHON_VERSION pip numpy
-  # - source activate test
-  #install TensorFlow from https://storage.googleapis.com/tensorflow/
   - pip install numpy
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
       pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.11.0-cp27-none-linux_x86_64.whl;
@@ -26,14 +16,6 @@ install:
     fi
   - export PYTHONPATH=$PYTHONPATH:$(pwd)
   - python setup.py install
-  # - pip install numpy
-  # # install TensorFlow from https://storage.googleapis.com/tensorflow/
-  # - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-  #     pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.11.0-cp27-none-linux_x86_64.whl;
-  #   elif [[ "$TRAVIS_PYTHON_VERSION" == "3.4" ]]; then
-  #     pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.11.0-cp36-cp36m-linux_x86_64.whl;
-  #   fi
-  # - python setup.py test
 
 script:
   - pytest
