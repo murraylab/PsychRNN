@@ -4,6 +4,9 @@ python:
   - "2.7"
   - "3.6"
 
+before_install:
+  - export PATH=$(echo $PATH | tr ':' "\n" | sed '/\/opt\/python/d' | tr "\n" ":" | sed "s|::|:|g")
+
 install:
   - wget http://repo.continuum.io/miniconda/Miniconda-3.7.3-Linux-x86_64.sh -O miniconda.sh;
   - bash miniconda.sh -b -p $HOME/miniconda
@@ -14,7 +17,6 @@ install:
   - conda info -a
   - conda create --yes -q -n test python=$TRAVIS_PYTHON_VERSION pip numpy tensorflow
   - source activate test
-  - conda list
   # install TensorFlow from https://storage.googleapis.com/tensorflow/
   # - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
   #     pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.11.0-cp27-none-linux_x86_64.whl;
