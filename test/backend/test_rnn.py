@@ -2,6 +2,7 @@ import pytest
 import tensorflow as tf
 from psychrnn.backend.rnn import RNN
 from psychrnn.backend.initializations import GaussianSpectralRadius
+from psychrnn.tasks import rdm as rd  
 
 # clears tf graph after each test.
 @pytest.fixture()
@@ -110,7 +111,7 @@ def test_destruct(tf_graph):
 	rnn2 = RNN(params)
 
 	#TODO(Jasmine): also test when built
-
+# The next 3 functions currently undefined in RNN. should I just make sure they pass? Or have it print a warning, unimplemented, along with message of type it should return?
 def test_recurrent_timestep():
 	pass
 
@@ -120,11 +121,33 @@ def test_output_timestep():
 def test_forward_pass():
 	pass
 
-def test_save():
-	pass
+def test_get_weights(tf_graph):
+	params = get_params()
+	rnn = RNN(params)
+	with pytest.raises(UserWarning) as excinfo:
+		rnn.get_weights()
+	assert 'No weights to return yet -- model has not yet been initialized.' in str(excinfo.value)
+	#TODO(jasmine): also test once actual weights exist
 
-def test_train():
-	pass
+def test_save(tf_graph):
+	params = get_params()
+	rnn = RNN(params)
+	with pytest.raises(UserWarning) as excinfo:
+		rnn.save("save_weights_path")
+	#TODO(Jasmine): also test with actual weights
+
+def test_train(tf_graph):
+	rdm = rd.RDM(dt = 10, tau = 100, T = 2000, N_batch = 128)  
+	gen = rdm.batch_generator()
+
+	params = get_params()
+	rnn = RNN(params)
+	with pytest.raises(UserWarning) as excinfo:
+		rnn.train(gen)
+	assert 'build' in str(excinfo.value)
+	#Also test when built
+
+
 
 def test_test():
 	pass

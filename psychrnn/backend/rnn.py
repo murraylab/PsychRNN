@@ -233,6 +233,7 @@ class RNN(object):
         tf.reset_default_graph()
         return
 
+#TODO(Jasmine): make return Nans / nonsensical with warning!!! and explanation of what needs to be written here / use basic model as test example.
     def recurrent_timestep(self, rnn_in, state):
 
         pass
@@ -267,6 +268,9 @@ class RNN(object):
         return
 
     def train(self, trial_batch_generator, train_params={}):
+        #TODO(Jasmine): or build automatically???
+        if not self.is_built:
+            raise UserWarning("Must build network before training. Call build() before calling train().")
 
         t0 = time()
         # --------------------------------------------------
