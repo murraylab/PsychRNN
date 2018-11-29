@@ -113,14 +113,26 @@ def test_destruct(tf_graph):
 
 	#TODO(Jasmine): also test when built
 # The next 3 functions currently undefined in RNN. should I just make sure they pass? Or have it print a warning, unimplemented, along with message of type it should return?
-def test_recurrent_timestep():
-	pass
+def test_recurrent_timestep(tf_graph):
+	params = get_params()
+	rnn = RNN(params)
+	with pytest.raises(UserWarning) as excinfo:
+		rnn.recurrent_timestep(1,2)
+	assert 'recurrent_timestep' in str(excinfo.value)
 
-def test_output_timestep():
-	pass
+def test_output_timestep(tf_graph):
+	params = get_params()
+	rnn = RNN(params)
+	with pytest.raises(UserWarning) as excinfo:
+		rnn.output_timestep(1)
+	assert 'output_timestep' in str(excinfo.value)
 
-def test_forward_pass():
-	pass
+def test_forward_pass(tf_graph):
+	params = get_params()
+	rnn = RNN(params)
+	with pytest.raises(UserWarning) as excinfo:
+		rnn.forward_pass()
+	assert 'forward_pass' in str(excinfo.value)
 
 def test_get_weights(tf_graph):
 	params = get_params()
