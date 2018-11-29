@@ -5,6 +5,7 @@ python:
   - "3.6"
 
 install:
+  - pip install pytest_mock
   - pip install numpy
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
       pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.11.0-cp27-none-linux_x86_64.whl;
