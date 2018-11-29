@@ -1,6 +1,7 @@
 import pytest
-from psychrnn.backend.rnn import RNN
 import tensorflow as tf
+from psychrnn.backend.rnn import RNN
+from psychrnn.backend.initializations import GaussianSpectralRadius
 
 # clears tf graph after each test.
 @pytest.fixture()
@@ -88,11 +89,15 @@ def test_extra_info_rnn(tf_graph):
 	params = extend_params(params)
 	RNN(params)
 
+#TODO(Jasmine): test load weights after testing save weights in train
 def test_load_weights_path_rnn():
 	pass
 
-def test_initializer_rnn():
-	pass
+def test_initializer_rnn(tf_graph):
+	params = get_params()
+	params = extend_params(params)
+	params['initializer'] = GaussianSpectralRadius(N_in=params['N_in'], N_rec=params['N_rec'], N_out=params['N_out'],autapses=True, spec_rad=1.1)
+	RNN(params)
 
 def test_build():
 	pass
