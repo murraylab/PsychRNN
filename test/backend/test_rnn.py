@@ -3,6 +3,7 @@ import tensorflow as tf
 from psychrnn.backend.rnn import RNN
 from psychrnn.backend.initializations import GaussianSpectralRadius
 from psychrnn.tasks import rdm as rd  
+from pytest_mock import mocker
 
 # clears tf graph after each test.
 @pytest.fixture()
@@ -13,8 +14,8 @@ def tf_graph():
 def get_params():
 	params = {}
 	params['name'] = "test"
-	params['N_in'] = 2
-	params['N_rec'] = 50
+	params['N_in'] = 3
+	params['N_rec'] = 51
 	params['N_out'] = 2
 	params['N_steps'] = 200
 	params['dt'] = 10
@@ -136,7 +137,7 @@ def test_save(tf_graph):
 		rnn.save("save_weights_path")
 	#TODO(Jasmine): also test with actual weights
 
-def test_train(tf_graph):
+def test_train(tf_graph, mocker):
 	rdm = rd.RDM(dt = 10, tau = 100, T = 2000, N_batch = 128)  
 	gen = rdm.batch_generator()
 
@@ -145,6 +146,10 @@ def test_train(tf_graph):
 	with pytest.raises(UserWarning) as excinfo:
 		rnn.train(gen)
 	assert 'build' in str(excinfo.value)
+
+	mocker.patch.object(RNN, 'forward_pass')
+	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
+	rnn.build()
 	#TODO(jasmine): Also test when built
 
 
