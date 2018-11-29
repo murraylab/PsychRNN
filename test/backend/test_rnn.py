@@ -100,6 +100,7 @@ def test_initializer_rnn(tf_graph):
 	RNN(params)
 
 def test_build(tf_graph):
+	pass
 	#TODO(Jasmine): doesn't work with forward pass unitialized -- should I fake initialize it or do something as a catch for ppl writing code? Otherwise should RNN be an abstract class of sorts?
 
 def test_destruct(tf_graph):
