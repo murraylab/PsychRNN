@@ -1,5 +1,12 @@
 import pytest
 from psychrnn.backend.rnn import RNN
+import tensorflow as tf
+
+# clears tf graph after each test.
+@pytest.fixture()
+def tf_graph():
+    yield
+    tf.reset_default_graph()
 
 def get_params():
 	params = {}
@@ -13,16 +20,79 @@ def get_params():
 	params['N_batch'] = 50
 	return params
 
-def test_rnn():
-	params = {}
+def extend_params(params):
+	params['dale_ratio'] = .2
+	params['rec_noise'] = .01
+	params['W_in_train'] = False
+	params['W_rec_train'] = False
+	params['b_rec_train'] = False
+	params['b_out_train'] = False
+	params['init_state_train'] = False
+	return params
+
+def test_minimal_info_rnn(tf_graph):
+	params = get_params()
+	del params['name']
 	with pytest.raises(KeyError) as excinfo:
 		RNN(params)
 	assert 'name' in str(excinfo.value)
+	
+	params = get_params()
+	del params['N_in']
+	with pytest.raises(KeyError) as excinfo:
+		RNN(params)
+	assert 'N_in' in str(excinfo.value)
+
+	params = get_params()
+	del params['N_rec']
+	with pytest.raises(KeyError) as excinfo:
+		RNN(params)
+	assert 'N_rec' in str(excinfo.value)
+
+	params = get_params()
+	del params['N_out']
+	with pytest.raises(KeyError) as excinfo:
+		RNN(params)
+	assert 'N_out' in str(excinfo.value)
+
+	params = get_params()
+	del params['N_steps']
+	with pytest.raises(KeyError) as excinfo:
+		RNN(params)
+	assert 'N_steps' in str(excinfo.value)
+
+	params = get_params()
+	del params['dt']
+	with pytest.raises(KeyError) as excinfo:
+		RNN(params)
+	assert 'dt' in str(excinfo.value)
+
+	params = get_params()
+	del params['tau']
+	with pytest.raises(KeyError) as excinfo:
+		RNN(params)
+	assert 'tau' in str(excinfo.value)
+
+	params = get_params()
+	del params['N_batch']
+	with pytest.raises(KeyError) as excinfo:
+		RNN(params)
+	assert 'N_batch' in str(excinfo.value)
+
+	# Test RNN works works if minimal info given.
 	params = get_params()
 	RNN(params)
 
-	# test throws errors if insufficient info given
-	
+def test_extra_info_rnn(tf_graph):
+	params = get_params()
+	params = extend_params(params)
+	RNN(params)
+
+def test_load_weights_path_rnn():
+	pass
+
+def test_initializer_rnn():
+	pass
 
 def test_build():
 	pass
