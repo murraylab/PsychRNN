@@ -99,11 +99,16 @@ def test_initializer_rnn(tf_graph):
 	params['initializer'] = GaussianSpectralRadius(N_in=params['N_in'], N_rec=params['N_rec'], N_out=params['N_out'],autapses=True, spec_rad=1.1)
 	RNN(params)
 
-def test_build():
-	pass
+def test_build(tf_graph):
+	#TODO(Jasmine): doesn't work with forward pass unitialized -- should I fake initialize it or do something as a catch for ppl writing code? Otherwise should RNN be an abstract class of sorts?
 
-def test_destruct():
-	pass
+def test_destruct(tf_graph):
+	params = get_params()
+	rnn1 = RNN(params)
+	rnn1.destruct()
+	rnn2 = RNN(params)
+
+	#TODO(Jasmine): also test when built
 
 def test_recurrent_timestep():
 	pass
