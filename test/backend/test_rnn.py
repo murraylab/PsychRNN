@@ -145,11 +145,20 @@ def test_train(tf_graph):
 	with pytest.raises(UserWarning) as excinfo:
 		rnn.train(gen)
 	assert 'build' in str(excinfo.value)
-	#Also test when built
+	#TODO(jasmine): Also test when built
 
 
 
 def test_test():
-	pass
+	rdm = rd.RDM(dt = 10, tau = 100, T = 2000, N_batch = 128)  
+	gen = rdm.batch_generator()
+	x,y,m = next(gen)
+
+	params = get_params()
+	rnn = RNN(params)
+	with pytest.raises(UserWarning) as excinfo:
+		rnn.test(x)
+	assert 'build' in str(excinfo.value)
+	#TODO(Jasmine): Also test when built
 
 

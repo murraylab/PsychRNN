@@ -374,7 +374,10 @@ class RNN(object):
         return losses, (t2 - t1), (t1 - t0)
 
     def test(self, trial_batch):
-
+        #TODO(Jasmine): or build automatically???
+        if not self.is_built:
+            raise UserWarning("Must build network before training. Call build() before calling train().")
+        
         if not self.is_initialized:
             self.sess.run(tf.global_variables_initializer())
 
