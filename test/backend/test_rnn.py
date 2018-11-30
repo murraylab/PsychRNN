@@ -111,7 +111,8 @@ def test_destruct(tf_graph):
 	rnn1.destruct()
 	rnn2 = RNN(params)
 	#TODO(Jasmine): also test when built
-
+	
+def test_recurrent_timestep(tf_graph):
 	params = get_params()
 	rnn = RNN(params)
 	with pytest.raises(UserWarning) as excinfo:
