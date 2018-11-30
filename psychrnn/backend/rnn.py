@@ -291,6 +291,13 @@ class RNN(object):
                 makedirs(path.dirname(save_weights_path))
 
         # --------------------------------------------------
+        # Make train weights folder if it doesn't already exist.
+        # --------------------------------------------------
+        if training_weights_path != None:
+            if path.dirname(training_weights_path) != "" and not path.exists(path.dirname(training_weights_path)):
+                makedirs(path.dirname(_weights_path))
+
+        # --------------------------------------------------
         # Compute gradients
         # --------------------------------------------------
         grads = optimizer.compute_gradients(self.reg_loss)
@@ -348,6 +355,8 @@ class RNN(object):
             if epoch % save_training_weights_epoch == 0:
                 if training_weights_path is not None:
                     self.save(training_weights_path + str(epoch))
+                if verbosity:
+                    print("Training weights saved in file: %s" % training_weights_path + str(epoch))
 
             epoch += 1
 

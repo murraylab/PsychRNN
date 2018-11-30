@@ -14,8 +14,8 @@ def tf_graph():
 def get_params():
 	params = {}
 	params['name'] = "test"
-	params['N_in'] = 3
-	params['N_rec'] = 51
+	params['N_in'] = 2
+	params['N_rec'] = 50
 	params['N_out'] = 2
 	params['N_steps'] = 200
 	params['dt'] = 10
@@ -111,7 +111,7 @@ def test_destruct(tf_graph):
 	rnn1.destruct()
 	rnn2 = RNN(params)
 	#TODO(Jasmine): also test when built
-	
+
 def test_recurrent_timestep(tf_graph):
 	params = get_params()
 	rnn = RNN(params)
@@ -148,7 +148,7 @@ def test_save(tf_graph):
 		rnn.save("save_weights_path")
 	#TODO(Jasmine): also test with actual weights
 
-def test_train(tf_graph, mocker):
+def test_train(tf_graph, mocker, capfd):
 	rdm = rd.RDM(dt = 10, tau = 100, T = 2000, N_batch = 128)  
 	gen = rdm.batch_generator()
 
@@ -161,7 +161,51 @@ def test_train(tf_graph, mocker):
 	mocker.patch.object(RNN, 'forward_pass')
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
 	rnn.build()
-	#TODO(jasmine): Also test when built
+
+	rdm1 = rd.RDM(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = rdm1.batch_generator()
+	assert rnn.is_initialized is False
+	rnn.train(gen1)
+	assert rnn.is_initialized is True
+	out, _ = capfd.readouterr()
+	assert out != ""
+
+def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
+	params = get_params()
+
+	rdm1 = rd.RDM(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = rdm1.batch_generator()
+	rdm2 = rd.RDM(dt = params['dt'], tau = params['tau'], T = 1000, N_batch = params['N_batch'])
+	gen2 = rdm2.batch_generator()
+
+	mocker.patch.object(RNN, 'forward_pass')
+	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
+	
+	rnn =RNN(params)
+	rnn.build()
+
+	train_params = {}
+	train_params['save_weights_path'] =  tmpdir.dirpath("save_weights.npz") # Where to save the model after training. Default: None
+	train_params['training_iters'] = 1000 # number of iterations to train for Default: 10000
+	train_params['learning_rate'] = .01 # Sets learning rate if use default optimizer Default: .001
+	train_params['loss_epoch'] = 20 # Compute and record loss every 'loss_epoch' epochs. Default: 10
+	train_params['verbosity'] = False
+	train_params['save_training_weights_epoch'] = 10 # save training weights every 'save_training_weights_epoch' epochs. Default: 100
+	train_params['training_weights_path'] = tmpdir.dirpath("training_weights") # where to save training weights as training progresses. Default: None
+	train_params['generator_function'] = gen2 # replaces trial_batch_generator with the generator_function when not none. Default: None
+	train_params['optimizer'] = tf.train.AdamOptimizer(learning_rate=train_params['learning_rate']) # What optimizer to use to compute gradients. Default: tf.train.AdamOptimizer(learning_rate=train_params['learning_rate'])
+	train_params['clip_grads'] = False # If true, clip gradients by norm 1. Default: True
+	
+	assert not tmpdir.dirpath("save_weights.npz").check(exists=1)
+	assert not tmpdir.dirpath("training_weights" + str(train_params['save_training_weights_epoch'])).check(exists=1)
+	rnn.train(gen1, train_params)
+
+	assert rnn.is_initialized is True
+	out, _ = capfd.readouterr()
+	print(out)
+	assert out is ""
+	assert tmpdir.dirpath("save_weights.npz").check(exists=1)
+	assert tmpdir.dirpath("training_weights" + str(train_params['save_training_weights_epoch'])).check(exists=1)
 
 
 
