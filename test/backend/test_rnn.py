@@ -185,13 +185,13 @@ def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
 	rnn.build()
 
 	train_params = {}
-	train_params['save_weights_path'] =  tmpdir.dirpath("save_weights.npz") # Where to save the model after training. Default: None
+	train_params['save_weights_path'] =  str(tmpdir.dirpath("save_weights.npz")) # Where to save the model after training. Default: None
 	train_params['training_iters'] = 1000 # number of iterations to train for Default: 10000
 	train_params['learning_rate'] = .01 # Sets learning rate if use default optimizer Default: .001
 	train_params['loss_epoch'] = 20 # Compute and record loss every 'loss_epoch' epochs. Default: 10
 	train_params['verbosity'] = False
 	train_params['save_training_weights_epoch'] = 10 # save training weights every 'save_training_weights_epoch' epochs. Default: 100
-	train_params['training_weights_path'] = tmpdir.dirpath("training_weights") # where to save training weights as training progresses. Default: None
+	train_params['training_weights_path'] = str(tmpdir.dirpath("training_weights")) # where to save training weights as training progresses. Default: None
 	train_params['generator_function'] = gen2 # replaces trial_batch_generator with the generator_function when not none. Default: None
 	train_params['optimizer'] = tf.train.AdamOptimizer(learning_rate=train_params['learning_rate']) # What optimizer to use to compute gradients. Default: tf.train.AdamOptimizer(learning_rate=train_params['learning_rate'])
 	train_params['clip_grads'] = False # If true, clip gradients by norm 1. Default: True
@@ -200,12 +200,13 @@ def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
 	assert not tmpdir.dirpath("training_weights" + str(train_params['save_training_weights_epoch'])).check(exists=1)
 	rnn.train(gen1, train_params)
 
+
 	assert rnn.is_initialized is True
 	out, _ = capfd.readouterr()
 	print(out)
 	assert out is ""
 	assert tmpdir.dirpath("save_weights.npz").check(exists=1)
-	assert tmpdir.dirpath("training_weights" + str(train_params['save_training_weights_epoch'])).check(exists=1)
+	assert tmpdir.dirpath("training_weights" + str(train_params['save_training_weights_epoch'])+ ".npz").check(exists=1)
 
 
 
