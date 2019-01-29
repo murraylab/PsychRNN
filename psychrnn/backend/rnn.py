@@ -234,16 +234,13 @@ class RNN(object):
         return
 
     def recurrent_timestep(self, rnn_in, state):
-
-        pass
+        raise UserWarning("recurrent_timestep must be implemented in child class. See Basic for example.")
 
     def output_timestep(self, state):
-
-        pass
+        raise UserWarning("output_timestep must be implemented in child class. See Basic for example.")
 
     def forward_pass(self):
-
-        pass
+        raise UserWarning("forward_pass must be implemented in child class. See Basic for example.")
 
     def get_weights(self):
         if not self.is_initialized or not self.is_built:
@@ -254,7 +251,7 @@ class RNN(object):
             for var in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES):
                 # avoid saving duplicates
                 if var.name.endswith(':0') and var.name.startswith(self.name):
-                    name = var.name[len(self.name):-2]
+                    name = var.name[len(self.name)+1:-2]
                     weights_dict.update({name: var.eval(session=self.sess)})
             return weights_dict
 
@@ -267,6 +264,8 @@ class RNN(object):
         return
 
     def train(self, trial_batch_generator, train_params={}):
+        if not self.is_built:
+            raise UserWarning("Must build network before training. Call build() before calling train().")
 
         t0 = time()
         # --------------------------------------------------
@@ -290,6 +289,13 @@ class RNN(object):
         if save_weights_path != None:
             if path.dirname(save_weights_path) != "" and not path.exists(path.dirname(save_weights_path)):
                 makedirs(path.dirname(save_weights_path))
+
+        # --------------------------------------------------
+        # Make train weights folder if it doesn't already exist.
+        # --------------------------------------------------
+        if training_weights_path != None:
+            if path.dirname(training_weights_path) != "" and not path.exists(path.dirname(training_weights_path)):
+                makedirs(path.dirname(_weights_path))
 
         # --------------------------------------------------
         # Compute gradients
@@ -349,6 +355,8 @@ class RNN(object):
             if epoch % save_training_weights_epoch == 0:
                 if training_weights_path is not None:
                     self.save(training_weights_path + str(epoch))
+                if verbosity:
+                    print("Training weights saved in file: %s" % training_weights_path + str(epoch))
 
             epoch += 1
 
@@ -370,6 +378,8 @@ class RNN(object):
         return losses, (t2 - t1), (t1 - t0)
 
     def test(self, trial_batch):
+        if not self.is_built:
+            raise UserWarning("Must build network before training. Call build() before calling train().")
 
         if not self.is_initialized:
             self.sess.run(tf.global_variables_initializer())
