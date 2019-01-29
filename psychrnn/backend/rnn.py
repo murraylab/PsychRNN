@@ -251,7 +251,7 @@ class RNN(object):
             for var in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES):
                 # avoid saving duplicates
                 if var.name.endswith(':0') and var.name.startswith(self.name):
-                    name = var.name[len(self.name):-2]
+                    name = var.name[len(self.name)+1:-2]
                     weights_dict.update({name: var.eval(session=self.sess)})
             return weights_dict
 

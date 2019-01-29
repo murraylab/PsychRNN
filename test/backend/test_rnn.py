@@ -92,8 +92,44 @@ def test_extra_info_rnn(tf_graph):
 	RNN(params)
 
 #TODO(Jasmine): test load weights after testing save weights in train
-def test_load_weights_path_rnn():
-	pass
+def test_load_weights_path_rnn(tf_graph,mocker,tmpdir, capfd):
+	params = get_params()
+
+	rdm1 = rd.RDM(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = rdm1.batch_generator()
+
+	mocker.patch.object(RNN, 'forward_pass')
+	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
+	
+	rnn =RNN(params)
+	rnn.build()
+
+	train_params = {}
+	train_params['save_weights_path'] =  str(tmpdir.dirpath("save_weights.npz")) # Where to save the model after training. Default: None
+	train_params['verbosity'] = False
+
+	### save out some weights to test with and destroy the rnn that created them
+	assert not tmpdir.dirpath("save_weights.npz").check(exists=1)
+	rnn.train(gen1, train_params)
+
+	assert rnn.is_initialized is True
+	out, _ = capfd.readouterr()
+	print(out)
+	assert out==""
+	assert tmpdir.dirpath("save_weights.npz").check(exists=1)
+	rnn.destruct()
+
+	### Make sure loading weights fails on nonexistent file
+	params['load_weights_path'] = "nonexistent"
+	with pytest.raises(FileNotFoundError) as excinfo:
+		rnn = RNN(params)
+	assert "No such file" in str(excinfo.value)
+	rnn.destruct()
+
+	### Ensure success when loading weights created previously
+	params['load_weights_path'] = str(tmpdir.dirpath("save_weights.npz"))
+	rnn = RNN(params)
+	
 
 def test_initializer_rnn(tf_graph):
 	params = get_params()
@@ -204,7 +240,7 @@ def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
 	assert rnn.is_initialized is True
 	out, _ = capfd.readouterr()
 	print(out)
-	assert out is ""
+	assert out==""
 	assert tmpdir.dirpath("save_weights.npz").check(exists=1)
 	assert tmpdir.dirpath("training_weights" + str(train_params['save_training_weights_epoch'])+ ".npz").check(exists=1)
 
