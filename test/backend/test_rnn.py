@@ -129,6 +129,8 @@ def test_load_weights_path_rnn(tf_graph,mocker,tmpdir, capfd):
 	### Ensure success when loading weights created previously
 	params['load_weights_path'] = str(tmpdir.dirpath("save_weights.npz"))
 	rnn = RNN(params)
+
+	tmpdir.dirpath("save_weights.npz").remove()
 	
 
 def test_initializer_rnn(tf_graph):
@@ -137,16 +139,26 @@ def test_initializer_rnn(tf_graph):
 	params['initializer'] = GaussianSpectralRadius(N_in=params['N_in'], N_rec=params['N_rec'], N_out=params['N_out'],autapses=True, spec_rad=1.1)
 	RNN(params)
 
-def test_build(tf_graph):
-	pass
-	#TODO(Jasmine): doesn't work with forward pass unitialized -- should I fake initialize it or do something as a catch for ppl writing code? Otherwise should RNN be an abstract class of sorts?
+def test_build(tf_graph, mocker):
+	rdm = rd.RDM(dt = 10, tau = 100, T = 2000, N_batch = 128)  
+	gen = rdm.batch_generator()
 
-def test_destruct(tf_graph):
+	params = get_params()
+	rnn = RNN(params)
+	mocker.patch.object(RNN, 'forward_pass')
+	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
+	rnn.build()
+
+def test_destruct(tf_graph, mocker):
 	params = get_params()
 	rnn1 = RNN(params)
 	rnn1.destruct()
 	rnn2 = RNN(params)
-	#TODO(Jasmine): also test when built
+	mocker.patch.object(RNN, 'forward_pass')
+	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
+	rnn2.build()
+	rnn2.destruct()
+	rnn3 = RNN(params)
 
 def test_recurrent_timestep(tf_graph):
 	params = get_params()
