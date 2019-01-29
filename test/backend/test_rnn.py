@@ -121,7 +121,7 @@ def test_load_weights_path_rnn(tf_graph,mocker,tmpdir, capfd):
 
 	### Make sure loading weights fails on nonexistent file
 	params['load_weights_path'] = "nonexistent"
-	with pytest.raises(FileNotFoundError) as excinfo:
+	with pytest.raises(EnvironmentError) as excinfo:
 		rnn = RNN(params)
 	assert "No such file" in str(excinfo.value)
 	rnn.destruct()
@@ -181,12 +181,24 @@ def test_forward_pass(tf_graph):
 		rnn.forward_pass()
 	assert 'forward_pass' in str(excinfo.value)
 
-def test_get_weights(tf_graph):
+def test_get_weights(tf_graph,mocker):
 	params = get_params()
 	rnn = RNN(params)
 	with pytest.raises(UserWarning) as excinfo:
 		rnn.get_weights()
 	assert 'No weights to return yet -- model has not yet been initialized.' in str(excinfo.value)
+	mocker.patch.object(RNN, 'forward_pass')
+	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
+	rnn.build()
+	with pytest.raises(UserWarning) as excinfo:
+		rnn.get_weights()
+	assert 'No weights to return yet -- model has not yet been initialized.' in str(excinfo.value)
+	rdm1 = rd.RDM(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = rdm1.batch_generator()
+	rnn.train(gen1)
+	assert type(rnn.get_weights()) is dict
+
+
 	#TODO(jasmine): also test once actual weights exist
 
 def test_save(tf_graph):
