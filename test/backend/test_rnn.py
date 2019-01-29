@@ -210,7 +210,7 @@ def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
 
 
 
-def test_test():
+def test_test(mocker):
 	rdm = rd.RDM(dt = 10, tau = 100, T = 2000, N_batch = 128)  
 	gen = rdm.batch_generator()
 	x,y,m = next(gen)
@@ -220,6 +220,12 @@ def test_test():
 	with pytest.raises(UserWarning) as excinfo:
 		rnn.test(x)
 	assert 'build' in str(excinfo.value)
-	#TODO(Jasmine): Also test when built
+	
+	mocker.patch.object(RNN, 'forward_pass')
+	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
+	rnn.build()
+
+	rnn.test(x)
+
 
 
