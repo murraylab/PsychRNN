@@ -350,10 +350,10 @@ class RNN(object):
                 # Allow for curriculum learning
                 # --------------------------------------------------
                 if generator_function is not None:
-                    trial_batch, _, output_mask = next(trial_batch_generator)
+                    trial_batch, trial_y, output_mask = next(trial_batch_generator)
                     output, _ = self.test(trial_batch)
                     output = np.greater_equal(output, .5)
-                    accuracy = np.mean(np.equal(output, output_mask))
+                    accuracy = np.sum(np.multiply(output_mask,np.equal(output, trial_y))) / np.sum(output_mask)
                     if verbosity:
                         print("Accuracy: " + str(accuracy))
                     if metric_test(accuracy, stage):
