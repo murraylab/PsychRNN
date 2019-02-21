@@ -9,16 +9,19 @@ Takes two channels of noisy input.
 Binary output with a one hot encoding towards the higher mean channel
 """
 class RDM(Task):
-    def __init__(self, dt, tau, T, N_batch):
+    def __init__(self, dt, tau, T, N_batch, coherence = None):
         super(RDM,self).__init__(2, 2, dt, tau, T, N_batch)
-
+        self.coherence = coherence
     def generate_trial_params(self, batch, trial):
 
         # ----------------------------------
         # Define parameters of a trial
         # ----------------------------------
         params = dict()
-        params['coherence'] = np.random.choice([0.1, 0.3, 0.5, 0.7])
+        if self.coherence == None:
+            params['coherence'] = np.random.choice([0.1, 0.3, 0.5, 0.7])
+        else:
+            params['coherence'] = self.coherence
         params['direction'] = np.random.choice([0, 1])
         params['stim_noise'] = 0.1
         params['onset_time'] = np.random.random() * self.T / 2.0

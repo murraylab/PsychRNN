@@ -279,6 +279,7 @@ class RNN(object):
         save_training_weights_epoch = train_params.get('save_training_weights_epoch', 100)
         training_weights_path = train_params.get('training_weights_path', None)
         generator_function = train_params.get('generator_function', None)
+        metric_test = train_params.get('metric_test', self.defaultMetricTest)
         optimizer = train_params.get('optimizer',
                                      tf.train.AdamOptimizer(learning_rate=learning_rate))
         clip_grads = train_params.get('clip_grads', True)
@@ -328,6 +329,8 @@ class RNN(object):
         epoch = 1
         batch_size = next(trial_batch_generator)[0].shape[0]
         losses = []
+        # stage for curriculum learning
+        stage = 0
 
         while epoch * batch_size < training_iters:
             batch_x, batch_y, output_mask = next(trial_batch_generator)
@@ -347,7 +350,17 @@ class RNN(object):
                 # Allow for curriculum learning
                 # --------------------------------------------------
                 if generator_function is not None:
-                    trial_batch_generator = generator_function(reg_loss, epoch)
+                    trial_batch, _, output_mask = next(trial_batch_generator)
+                    output, _ = self.test(trial_batch)
+                    output = np.greater_equal(output, .5)
+                    accuracy = np.mean(np.equal(output, output_mask))
+                    if verbosity:
+                        print("Accuracy: " + str(accuracy))
+                    if metric_test(accuracy, stage):
+                        stage += 1
+                        trial_batch_generator = generator_function(stage)
+                        if verbosity:
+                            print("Stage " + str(stage))
 
             # --------------------------------------------------
             # Save intermediary weights
@@ -355,8 +368,8 @@ class RNN(object):
             if epoch % save_training_weights_epoch == 0:
                 if training_weights_path is not None:
                     self.save(training_weights_path + str(epoch))
-                if verbosity:
-                    print("Training weights saved in file: %s" % training_weights_path + str(epoch))
+                    if verbosity:
+                        print("Training weights saved in file: %s" % training_weights_path + str(epoch))
 
             epoch += 1
 
@@ -391,3 +404,8 @@ class RNN(object):
                                         feed_dict={self.x: trial_batch})
 
         return outputs, states
+
+    def defaultMetricTest(self, accuracy, stage):
+        if accuracy > .9:
+            return True
+        return False
