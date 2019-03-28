@@ -13,7 +13,7 @@ import numpy as np
 class Romo(Task):
 
     def __init__(self, dt, tau, T, N_batch):
-        super(RDM,self).__init__(2, 2, dt, tau, T, N_batch)
+        super(Romo,self).__init__(2, 2, dt, tau, T, N_batch)
 
     def scale_p(self, f):
         return 0.4 + 0.8 * (f - 10) / (34 - 10)
