@@ -44,7 +44,7 @@ class Romo(Task):
 
         params['stim_noise'] = 0.1
 
-        fpair = np.random.choice(len(self.frequency_pairs))
+        fpair = self.frequency_pairs[np.random.choice(len(self.frequency_pairs))]
         gt_lt = np.random.choice(self.decision_options)
         if gt_lt == '>':
             f1, f2 = fpair
