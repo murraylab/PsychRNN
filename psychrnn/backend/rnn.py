@@ -279,10 +279,15 @@ class RNN(object):
         save_training_weights_epoch = train_params.get('save_training_weights_epoch', 100)
         training_weights_path = train_params.get('training_weights_path', None)
         generator_function = train_params.get('generator_function', None)
+        accuracy_function = train_params.get('accuracy_function', None)
         metric_test = train_params.get('metric_test', self.defaultMetricTest)
         optimizer = train_params.get('optimizer',
                                      tf.train.AdamOptimizer(learning_rate=learning_rate))
         clip_grads = train_params.get('clip_grads', True)
+
+        if generator_function!=None and accuracy_function==None:
+            raise UserWarning("accuracy_function must be defined in order to iterate through generator_function generators");
+
 
         # --------------------------------------------------
         # Make weights folder if it doesn't already exist.
@@ -352,8 +357,7 @@ class RNN(object):
                 if generator_function is not None:
                     trial_batch, trial_y, output_mask = next(trial_batch_generator)
                     output, _ = self.test(trial_batch)
-                    output = np.greater_equal(output, .5)
-                    accuracy = np.sum(np.multiply(output_mask,np.equal(output, trial_y))) / np.sum(output_mask)
+                    accuracy = accuracy_function(stage, trial_y, output, output_mask)
                     if verbosity:
                         print("Accuracy: " + str(accuracy))
                     if metric_test(accuracy, stage):

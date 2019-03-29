@@ -28,6 +28,11 @@ class Task(object):
     def trial_function(self, time, params):
         pass
 
+    # Function to measure accuracy (not loss) as it would be measured in experiments with animals. Output should range from 0 to 1.
+    # Used for curriculum learning.
+    def accuracy_function(self, correct_output, test_output, output_mask):
+        pass
+
     def generate_trial(self, params):
 
         # ----------------------------------
