@@ -332,7 +332,7 @@ class RNN(object):
         batch_size = next(trial_batch_generator)[0].shape[0]
         losses = []
 
-        while (not curriculum and epoch * batch_size < training_iters) or (curriculum and curriculum.continueIterating):
+        while (curriculum is None and epoch * batch_size < training_iters) or curriculum:
             batch_x, batch_y, output_mask = next(trial_batch_generator)
             self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
             # --------------------------------------------------
@@ -353,6 +353,8 @@ class RNN(object):
                 trial_batch, trial_y, output_mask = next(trial_batch_generator)
                 output, _ = self.test(trial_batch)
                 if curriculum.metric_test(trial_batch, trial_y, output_mask, output, epoch, losses, verbosity):
+                    if curriculum.stopTraining:
+                        break
                     trial_batch_generator = curriculum.get_generator_function()
 
             # --------------------------------------------------

@@ -1,7 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 
-def default_metric(curriculum_params, input, correct_output, output_mask, output, epoch, losses, verbosity):
+def default_metric(curriculum_params, input_data, correct_output, output_mask, output, epoch, losses, verbosity):
 	accuracy = curriculum_params['accuracies'][curriculum_params['stage']](correct_output,output, output_mask)
 	threshold = curriculum_params['thresholds'][curriculum_params['stage']]
 	if verbosity:
@@ -10,7 +10,7 @@ def default_metric(curriculum_params, input, correct_output, output_mask, output
 
 class Curriculum(object):
 	def __init__(self, tasks, **kwargs):
-		self.continueIterating = True
+		self.stopTraining = False
 		self.stage = 0
 		self.tasks = tasks
 		self.metric = kwargs.get('metric', default_metric)
@@ -20,11 +20,11 @@ class Curriculum(object):
 		assert len(self.thresholds)==len(self.tasks)
 		self.metric_epoch = kwargs.get('metric_epoch', 10)
 	
-	def metric_test(self,input, correct_output, output_mask, test_output, epoch, losses, verbosity):
-		if self.metric(self.__dict__, trial_batch, trial_y, output_mask, output, epoch, losses, verbosity):
+	def metric_test(self, input_data, correct_output, output_mask, test_output, epoch, losses, verbosity):
+		if self.metric(self.__dict__, input_data, correct_output, output_mask, test_output, epoch, losses, verbosity):
 			self.stage+=1
 			if self.stage>len(self.tasks):
-				self.continueIterating = False
+				self.stopTraining = True
 			if verbosity:
 				print("Stage " + str(self.stage))
 			return True
