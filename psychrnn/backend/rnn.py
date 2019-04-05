@@ -332,7 +332,7 @@ class RNN(object):
         batch_size = next(trial_batch_generator)[0].shape[0]
         losses = []
 
-        while (curriculum is None and epoch * batch_size < training_iters) or curriculum:
+        while epoch * batch_size < training_iters:
             batch_x, batch_y, output_mask = next(trial_batch_generator)
             self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
             # --------------------------------------------------
