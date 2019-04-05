@@ -23,7 +23,7 @@ class Curriculum(object):
 	def metric_test(self, input_data, correct_output, output_mask, test_output, epoch, losses, verbosity):
 		if self.metric(self.__dict__, input_data, correct_output, output_mask, test_output, epoch, losses, verbosity):
 			self.stage+=1
-			if self.stage>len(self.tasks):
+			if self.stage == len(self.tasks):
 				self.stopTraining = True
 			if verbosity:
 				print("Stage " + str(self.stage))
