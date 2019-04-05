@@ -278,16 +278,13 @@ class RNN(object):
         save_weights_path = train_params.get('save_weights_path', None)
         save_training_weights_epoch = train_params.get('save_training_weights_epoch', 100)
         training_weights_path = train_params.get('training_weights_path', None)
-        generator_function = train_params.get('generator_function', None)
-        accuracy_function = train_params.get('accuracy_function', None)
-        metric_test = train_params.get('metric_test', self.defaultMetricTest)
+        curriculum = train_params.get('curriculum', None)
         optimizer = train_params.get('optimizer',
                                      tf.train.AdamOptimizer(learning_rate=learning_rate))
         clip_grads = train_params.get('clip_grads', True)
 
-        if generator_function!=None and accuracy_function==None:
-            raise UserWarning("accuracy_function must be defined in order to iterate through generator_function generators");
-
+        if curriculum is not None:
+            trial_batch_generator = curriculum.get_generator_function()
 
         # --------------------------------------------------
         # Make weights folder if it doesn't already exist.
@@ -334,10 +331,8 @@ class RNN(object):
         epoch = 1
         batch_size = next(trial_batch_generator)[0].shape[0]
         losses = []
-        # stage for curriculum learning
-        stage = 0
 
-        while epoch * batch_size < training_iters:
+        while (not curriculum and epoch * batch_size < training_iters) or (curriculum and curriculum.continueIterating):
             batch_x, batch_y, output_mask = next(trial_batch_generator)
             self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
             # --------------------------------------------------
@@ -351,20 +346,14 @@ class RNN(object):
                     print("Iter " + str(epoch * batch_size) + ", Minibatch Loss= " + \
                           "{:.6f}".format(reg_loss))
 
-                # --------------------------------------------------
-                # Allow for curriculum learning
-                # --------------------------------------------------
-                if generator_function is not None:
-                    trial_batch, trial_y, output_mask = next(trial_batch_generator)
-                    output, _ = self.test(trial_batch)
-                    accuracy = accuracy_function(stage, trial_y, output, output_mask)
-                    if verbosity:
-                        print("Accuracy: " + str(accuracy))
-                    if metric_test(accuracy, stage):
-                        stage += 1
-                        trial_batch_generator = generator_function(stage)
-                        if verbosity:
-                            print("Stage " + str(stage))
+            # --------------------------------------------------
+            # Allow for curriculum learning
+            # --------------------------------------------------
+            if curriculum is not None and epoch % curriculum.metric_epoch == 0:
+                trial_batch, trial_y, output_mask = next(trial_batch_generator)
+                output, _ = self.test(trial_batch)
+                if curriculum.metric_test(trial_batch, trial_y, output_mask, output, epoch, losses, verbosity):
+                    trial_batch_generator = curriculum.get_generator_function()
 
             # --------------------------------------------------
             # Save intermediary weights
@@ -408,8 +397,3 @@ class RNN(object):
                                         feed_dict={self.x: trial_batch})
 
         return outputs, states
-
-    def defaultMetricTest(self, accuracy, stage):
-        if accuracy > .9:
-            return True
-        return False
