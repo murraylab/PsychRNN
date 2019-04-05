@@ -62,20 +62,7 @@ class RDM(Task):
         return x_t, y_t, mask_t
 
     def accuracy_function(self, correct_output, test_output, output_mask):
-        normalized = np.zeros_like(test_output[:,0,:])
-        masked = test_output*output_mask
-        # How many times within a trial network chooses direction 0 
-        normalized[:,0]= np.greater(masked[:,:,0],masked[:,:,1]).sum(1)
-        # How many times within a trial the network chooses direction 1
-        normalized[:,1]= np.less(masked[:,:,0],masked[:,:,1]).sum(1)
-        
-        # True in indices [:,0] if direction 0 was chosen the majority of the time, True in [:,1] if direction 1 was chosen the majority of the time 
-        normalized = (normalized == normalized.max(axis=1)[:,None]).astype(int)
-        
-        # Correct version of the normalized array, based on input data
-        truth = correct_output[:,correct_output.shape[1]-1,:]
-        matching = np.equal(truth, normalized)
-
-        # percentage / 100 of correct trials 
-        return np.sum(np.logical_and(matching[:,0], matching[:,1]))/test_output.shape[0]
+        chosen = np.argmax(np.mean(test_output*output_mask, axis=1), axis = 1)
+        truth = np.argmax(np.mean(correct_output*output_mask, axis = 1), axis = 1)
+        return np.mean(np.equal(truth, chosen))
 
