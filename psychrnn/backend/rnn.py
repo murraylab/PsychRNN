@@ -278,10 +278,13 @@ class RNN(object):
         save_weights_path = train_params.get('save_weights_path', None)
         save_training_weights_epoch = train_params.get('save_training_weights_epoch', 100)
         training_weights_path = train_params.get('training_weights_path', None)
-        generator_function = train_params.get('generator_function', None)
+        curriculum = train_params.get('curriculum', None)
         optimizer = train_params.get('optimizer',
                                      tf.train.AdamOptimizer(learning_rate=learning_rate))
         clip_grads = train_params.get('clip_grads', True)
+
+        if curriculum is not None:
+            trial_batch_generator = curriculum.get_generator_function()
 
         # --------------------------------------------------
         # Make weights folder if it doesn't already exist.
@@ -343,11 +346,16 @@ class RNN(object):
                     print("Iter " + str(epoch * batch_size) + ", Minibatch Loss= " + \
                           "{:.6f}".format(reg_loss))
 
-                # --------------------------------------------------
-                # Allow for curriculum learning
-                # --------------------------------------------------
-                if generator_function is not None:
-                    trial_batch_generator = generator_function(reg_loss, epoch)
+            # --------------------------------------------------
+            # Allow for curriculum learning
+            # --------------------------------------------------
+            if curriculum is not None and epoch % curriculum.metric_epoch == 0:
+                trial_batch, trial_y, output_mask = next(trial_batch_generator)
+                output, _ = self.test(trial_batch)
+                if curriculum.metric_test(trial_batch, trial_y, output_mask, output, epoch, losses, verbosity):
+                    if curriculum.stopTraining:
+                        break
+                    trial_batch_generator = curriculum.get_generator_function()
 
             # --------------------------------------------------
             # Save intermediary weights
@@ -355,8 +363,8 @@ class RNN(object):
             if epoch % save_training_weights_epoch == 0:
                 if training_weights_path is not None:
                     self.save(training_weights_path + str(epoch))
-                if verbosity:
-                    print("Training weights saved in file: %s" % training_weights_path + str(epoch))
+                    if verbosity:
+                        print("Training weights saved in file: %s" % training_weights_path + str(epoch))
 
             epoch += 1
 

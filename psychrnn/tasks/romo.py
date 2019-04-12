@@ -106,3 +106,8 @@ class Romo(Task):
             mask_t = np.zeros(self.N_out)
 
         return x_t, y_t, mask_t
+
+    def accuracy_function(self, correct_output, test_output, output_mask):
+        chosen = np.argmax(np.mean(test_output*output_mask, axis=1), axis = 1)
+        truth = np.argmax(np.mean(correct_output*output_mask, axis = 1), axis = 1)
+        return np.mean(np.equal(truth, chosen))
