@@ -24,7 +24,7 @@ class Curriculum(object):
 		self.metric = kwargs.get('metric', default_metric)
 		
 		#Optional list of accuracy functions to use for each task
-		self.accuracies = kwargs.get('accuracy', [tasks[i].accuracy_function for i in range(len(tasks))])
+		self.accuracies = kwargs.get('accuracies', [tasks[i].accuracy_function for i in range(len(tasks))])
 		assert len(self.accuracies)==len(self.tasks)
 		
 		# Optional list of accuracy cuttoff values to use with each tasks
