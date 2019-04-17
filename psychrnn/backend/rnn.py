@@ -282,6 +282,11 @@ class RNN(object):
         optimizer = train_params.get('optimizer',
                                      tf.train.AdamOptimizer(learning_rate=learning_rate))
         clip_grads = train_params.get('clip_grads', True)
+        performance_cutoff = train_params.get('performance_cutoff', None)
+        performance_measure = train_params.get('performance_measure', None)
+
+        if (performance_cutoff is not None and performance_measure is None) or (performance_cutoff is None and performance_measure is not None):
+                raise UserWarning("training will not be cutoff based on performance. Make sure both performance_measure and performance_cutoff are defined")
 
         if curriculum is not None:
             trial_batch_generator = curriculum.get_generator_function()
@@ -331,8 +336,10 @@ class RNN(object):
         epoch = 1
         batch_size = next(trial_batch_generator)[0].shape[0]
         losses = []
+        if performance_cutoff is not None:
+            performance = performance_cutoff - 1
 
-        while epoch * batch_size < training_iters:
+        while epoch * batch_size < training_iters and (performance_cutoff is None or performance < performance_cutoff):
             batch_x, batch_y, output_mask = next(trial_batch_generator)
             self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
             # --------------------------------------------------
@@ -365,7 +372,16 @@ class RNN(object):
                     self.save(training_weights_path + str(epoch))
                     if verbosity:
                         print("Training weights saved in file: %s" % training_weights_path + str(epoch))
-
+            
+            # ---------------------------------------------------
+            # Update performance value if necessary
+            # ---------------------------------------------------
+            if performance_measure is not None:
+                trial_batch, trial_y, output_mask = next(trial_batch_generator)
+                output, _ = self.test(trial_batch)
+                performance = performance_measure(trial_batch, trial_y, output_mask, output, epoch, losses, verbosity)
+                if verbosity:
+                    print("performance: " + str(performance))
             epoch += 1
 
         t2 = time()
