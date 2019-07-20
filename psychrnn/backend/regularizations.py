@@ -66,7 +66,7 @@ class Regularizer(object):
         reg += self.L2_in * tf.reduce_mean(tf.square(tf.abs(model.W_in) * model.input_connectivity))
         reg += self.L2_rec * tf.reduce_mean(tf.square(tf.abs(model.W_rec) * model.rec_connectivity))
         if model.dale_ratio:
-            reg += model.L2_out * tf.reduce_mean(tf.square(
+            reg += self.L2_out * tf.reduce_mean(tf.square(
                 tf.matmul(tf.abs(model.W_out) * model.output_connectivity, model.Dale_out)))
         else:
             reg += self.L2_out * tf.reduce_mean(tf.square(tf.abs(model.W_out) * model.output_connectivity))
