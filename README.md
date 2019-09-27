@@ -29,11 +29,6 @@ git clone https://github.com/dbehrlich/PsychRNN.git
 cd PsychRNN   
 python setup.py install
 
-#### Alternative Install
-
-pip install PsychRNN
-
-
 ## 17 Lines Introduction
 
 A minimal introduction to our package. In this simple introduction you can generate a new recurrent neural network model, train that model on the random dot motion discrimination task, and plot out an example output in just 17 lines.
