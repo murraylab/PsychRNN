@@ -2,6 +2,7 @@ from __future__ import division
 
 import numpy as np
 import tensorflow as tf
+from warnings import warn
 
 
 class WeightInitializer(object):

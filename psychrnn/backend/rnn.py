@@ -243,6 +243,9 @@ class RNN(object):
     def forward_pass(self):
         raise UserWarning("forward_pass must be implemented in child class. See Basic for example.")
 
+    def get_initial_weights(self):
+        return self.initializer.initializations
+
     def get_weights(self):
         if not self.is_initialized or not self.is_built:
             raise UserWarning("No weights to return yet -- model has not yet been initialized.")
