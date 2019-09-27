@@ -106,6 +106,9 @@ class RNN(object):
         # ------------------------------------------------
         if self.load_weights_path is not None:
             self.initializer = WeightInitializer(load_weights_path=self.load_weights_path)
+        elif params.get('W_rec', None) is not None:
+            self.initializer = params.get('initializer',
+                                          WeightInitializer(**params))
         else:
             self.initializer = params.get('initializer',
                                           GaussianSpectralRadius(**params))

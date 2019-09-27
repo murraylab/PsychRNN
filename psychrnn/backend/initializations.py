@@ -26,6 +26,8 @@ class WeightInitializer(object):
             # ----------------------------------
             self.initializations = np.load(self.load_weights_path)
         else:
+            if kwargs.get('W_rec', None) is None and not kwargs.get('parent', False):
+                warn("This network may not train since the eigenvalues of W_rec are not regulated in any way.")
             # ----------------------------------
             # Default initializations / optional loading from params
             # ----------------------------------
@@ -42,7 +44,7 @@ class WeightInitializer(object):
             assert(self.initializations['b_out'].shape == (N_out,))
 
             self.initializations['init_state'] = kwargs.get('init_state', .1 + .01 * np.random.randn(N_rec))
-            assert(self.initializations['init_state'].shape == (N_rec,))
+            assert(self.initializations['init_state'].size == N_rec)
 
             self.initializations['input_connectivity'] = kwargs.get('input_connectivity',np.ones([N_rec, N_in]))
             assert(self.initializations['input_connectivity'].shape == (N_rec, N_in))
@@ -76,6 +78,7 @@ class GaussianSpectralRadius(WeightInitializer):
     '''Generate random gaussian weights with specified spectral radius'''
 
     def __init__(self, **kwargs):
+        kwargs['parent'] = True
 
         super(GaussianSpectralRadius, self).__init__(**kwargs)
 
@@ -95,6 +98,7 @@ class AlphaIdentity(WeightInitializer):
     '''Generate recurrent weights w(i,i) = alpha, w(i,j) = 0'''
 
     def __init__(self, **kwargs):
+        kwargs['parent'] = True
 
         super(AlphaIdentity, self).__init__(**kwargs)
 
