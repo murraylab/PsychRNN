@@ -108,9 +108,7 @@ class RNN(object):
             self.initializer = WeightInitializer(load_weights_path=self.load_weights_path)
         else:
             self.initializer = params.get('initializer',
-                                          GaussianSpectralRadius(N_in=N_in,
-                                                                 N_rec=N_rec, N_out=N_out,
-                                                                 autapses=True, spec_rad=1.1))
+                                          GaussianSpectralRadius(**params))
 
         # --------------------------------------------------
         # Tensorflow input/output placeholder initializations

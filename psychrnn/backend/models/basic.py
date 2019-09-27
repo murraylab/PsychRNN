@@ -13,12 +13,14 @@ class Basic(RNN):
                         + self.alpha * (
                             tf.matmul(
                                 tf.nn.relu(state),
+                                #W_rec starts here TODO(jasmine)
                                 tf.matmul(
                                     tf.abs(self.W_rec) * self.rec_connectivity,
                                     self.Dale_rec, name="in_1"),
                                 transpose_b=True, name="1")
                             + tf.matmul(
                                 rnn_in,
+                                # W_in starts here TODO(jasmine)
                                 tf.abs(self.W_in) * self.input_connectivity,
                                 transpose_b=True, name="2")
                             + self.b_rec)\
@@ -46,6 +48,7 @@ class Basic(RNN):
 
         if self.dale_ratio:
             output = tf.matmul(tf.nn.relu(state),
+                                    # W_out starts here
                                     tf.matmul(tf.abs(self.W_out) * self.output_connectivity,
                                             self.Dale_out, name="in_2"), transpose_b=True, name="3") \
                         + self.b_out
