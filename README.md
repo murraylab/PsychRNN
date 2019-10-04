@@ -52,7 +52,7 @@ A minimal introduction to our package. In this simple introduction you can gener
 	model.build()  
 	model.train(gen)
 
-	x,_,_ = next(gen)
+	x,_,_,_ = next(gen)
 
 	plt.plot(model.test(x)[0][0,:,:])
 
