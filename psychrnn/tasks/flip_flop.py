@@ -54,7 +54,7 @@ class FlipFlop(Task):
         for i, (input_start, echo_start) in enumerate(zip(input_times, echo_times)):
 
             if input_start <= t < input_start + echo_start:
-                x_t = 1.0
+                x_t += 1.0
                 mask_t = np.zeros(self.N_out)
 
             elif echo_start <= t < echo_start + echo_duration:

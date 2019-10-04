@@ -54,6 +54,7 @@ class Task(object):
             x_data = []
             y_data = []
             mask = []
+            params = []
             # ----------------------------------
             # Loop over trials in batch
             # ----------------------------------
@@ -61,12 +62,14 @@ class Task(object):
                 # ---------------------------------------
                 # Generate each trial based on its params
                 # ---------------------------------------
-                x,y,m = self.generate_trial(self.generate_trial_params(batch, trial))
+                p = self.generate_trial_params(batch, trial)
+                x,y,m = self.generate_trial(p)
                 x_data.append(x)
                 y_data.append(y)
                 mask.append(m)
+                params.append(p)
 
             batch += 1
 
-            yield np.array(x_data), np.array(y_data), np.array(mask)
+            yield np.array(x_data), np.array(y_data), np.array(mask), np.array(p)
 

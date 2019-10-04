@@ -86,16 +86,16 @@ class Romo(Task):
             mask_t = np.zeros(self.N_out)
 
         if stimulus_1 <= t < delay:
-            x_t[0] = self.scale_p(f1)
-            x_t[1] = self.scale_n(f1)
+            x_t[0] += self.scale_p(f1)
+            x_t[1] += self.scale_n(f1)
             mask_t = np.zeros(self.N_out)
 
         if delay <= t < stimulus_2:
             mask_t = np.zeros(self.N_out)
 
         if stimulus_2 <= t < decision:
-            x_t[0] = self.scale_p(f2)
-            x_t[1] = self.scale_n(f2)
+            x_t[0] += self.scale_p(f2)
+            x_t[1] += self.scale_n(f2)
             mask_t = np.zeros(self.N_out)
 
         if decision <= t < end:
