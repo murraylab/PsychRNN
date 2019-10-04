@@ -283,7 +283,7 @@ def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
 def test_test(mocker):
 	rdm = rd.RDM(dt = 10, tau = 100, T = 2000, N_batch = 128)  
 	gen = rdm.batch_generator()
-	x,y,m = next(gen)
+	x,y,m,p = next(gen)
 
 	params = get_params()
 	rnn = RNN(params)
