@@ -128,10 +128,14 @@ class RNN(object):
             # Trainable variables:
             # Initial State, weight matrices and biases
             # ------------------------------------------------
-
-            self.init_state = tf.get_variable('init_state', [1, N_rec],
+            try:
+                self.init_state = tf.get_variable('init_state', [1, N_rec],
                                               initializer=self.initializer.get('init_state'),
                                               trainable=self.init_state_train)
+            except ValueError as error:
+                raise UserWarning("Try calling model.destruct() or changing params['name'].")
+
+
             self.init_state = tf.tile(self.init_state, [self.N_batch, 1])
 
             # Input weight matrix:
