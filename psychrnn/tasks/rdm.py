@@ -12,6 +12,10 @@ class RDM(Task):
     def __init__(self, dt, tau, T, N_batch, coherence = None):
         super(RDM,self).__init__(2, 2, dt, tau, T, N_batch)
         self.coherence = coherence
+    
+    lo = 0.2
+    hi = 1.0
+
     def generate_trial_params(self, batch, trial):
 
         # ----------------------------------
@@ -54,7 +58,8 @@ class RDM(Task):
             x_t[(dir + 1) % 2] += 1
 
         if t > onset + stim_dur + 20:
-            y_t[dir] = 1.
+            y_t[dir] = self.hi
+            y_t[1-dir] = self.lo
 
         if t < onset + stim_dur:
             mask_t = np.zeros(self.N_out)
