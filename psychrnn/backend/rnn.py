@@ -238,6 +238,24 @@ class RNN(object):
         tf.reset_default_graph()
         return
 
+    def get_effective_W_rec(self):
+        W_rec = self.W_rec * self.rec_connectivity
+        if self.dale_ratio:
+            W_rec = tf.matmul(tf.abs(W_rec), self.Dale_rec, name="in_1")
+        return W_rec
+
+    def get_effective_W_in(self):
+        W_in = self.W_in * self.input_connectivity
+        if self.dale_ratio:
+            W_in = tf.abs(W_in)
+        return W_in
+
+    def get_effective_W_out(self):
+        W_out = self.W_out * self.output_connectivity
+        if self.dale_ratio:
+            W_out = tf.matmul(tf.abs(self.W_out), self.Dale_out, name="in_2")
+        return W_out
+    
     def recurrent_timestep(self, rnn_in, state):
         raise UserWarning("recurrent_timestep must be implemented in child class. See Basic for example.")
 
@@ -255,12 +273,15 @@ class RNN(object):
             raise UserWarning("No weights to return yet -- model has not yet been initialized.")
         else:
             weights_dict = dict()
-
+            
             for var in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES):
                 # avoid saving duplicates
                 if var.name.endswith(':0') and var.name.startswith(self.name):
                     name = var.name[len(self.name)+1:-2]
                     weights_dict.update({name: var.eval(session=self.sess)})
+            weights_dict.update({'W_rec': self.get_effective_W_rec().eval(session=self.sess)})
+            weights_dict.update({'W_in': self.get_effective_W_in().eval(session=self.sess)})
+            weights_dict.update({'W_out': self.get_effective_W_out().eval(session=self.sess)})
             return weights_dict
 
     def save(self, save_path):
