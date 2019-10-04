@@ -11,7 +11,7 @@ class Basic(RNN):
         new_state = ((1-self.alpha) * state) \
                     + self.alpha * (
                         tf.matmul(
-                            tf.nn.relu(state),
+                            self.transfer_function(state),
                             self.get_effective_W_rec(),
                             transpose_b=True, name="1")
                         + tf.matmul(
@@ -26,7 +26,7 @@ class Basic(RNN):
 
     def output_timestep(self, state):
      
-        output = tf.matmul(tf.nn.relu(state),
+        output = tf.matmul(self.transfer_function(state),
                                 self.get_effective_W_out(), transpose_b=True, name="3") \
                     + self.b_out
      
@@ -44,26 +44,6 @@ class Basic(RNN):
             rnn_outputs.append(output)
             rnn_states.append(state)
         return tf.transpose(rnn_outputs, [1, 0, 2]), tf.transpose(rnn_states, [1, 0, 2])
-
-class BasicSigmoid(Basic):
-
-    def recurrent_timestep(self, rnn_in, state):
-        
-        new_state = ((1-self.alpha) * state) \
-                    + self.alpha * (
-                        tf.matmul(
-                            tf.nn.sigmoid(state),
-                            self.get_effective_W_rec(),
-                            transpose_b=True, name="1")
-                        + tf.matmul(
-                            rnn_in,
-                            self.get_effective_W_in(),
-                            transpose_b=True, name="2")
-                        + self.b_rec)\
-                    + tf.sqrt(2.0 * self.alpha * self.rec_noise * self.rec_noise)\
-                      * tf.random_normal(tf.shape(state), mean=0.0, stddev=1.0)
-
-        return new_state
 
 
 class BasicScan(Basic):

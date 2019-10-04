@@ -72,6 +72,7 @@ class RNN(object):
         self.alpha = (1.0 * self.dt) / self.tau
         self.dale_ratio = params.get('dale_ratio', None)
         self.rec_noise = params.get('rec_noise', 0.0)
+        self.transfer_function = params.get('transfer_function', tf.nn.relu)
 
         # ----------------------------------
         # Dale's law matrix
