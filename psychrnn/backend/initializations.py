@@ -9,7 +9,6 @@ class WeightInitializer(object):
 
     def __init__(self, **kwargs):
 
-        print(kwargs)
         # ----------------------------------
         # Required parameters
         # ----------------------------------
