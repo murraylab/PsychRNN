@@ -74,28 +74,6 @@ class RNN(object):
         self.rec_noise = params.get('rec_noise', 0.0)
         self.transfer_function = params.get('transfer_function', tf.nn.relu)
 
-        # ----------------------------------
-        # Dale's law matrix
-        # ----------------------------------
-        dale_vec = np.ones(N_rec)
-        if self.dale_ratio is not None:
-            dale_vec[int(self.dale_ratio * N_rec):] = -1
-            self.dale_rec = np.diag(dale_vec)
-            dale_vec[int(self.dale_ratio * N_rec):] = 0
-            self.dale_out = np.diag(dale_vec)
-        else:
-            self.dale_rec = np.diag(dale_vec)
-            self.dale_out = np.diag(dale_vec)
-
-        # ----------------------------------
-        # Trainable features
-        # ----------------------------------
-        self.W_in_train = params.get('W_in_train', True)
-        self.W_rec_train = params.get('W_rec_train', True)
-        self.W_out_train = params.get('W_out_train', True)
-        self.b_rec_train = params.get('b_rec_train', True)
-        self.b_out_train = params.get('b_out_train', True)
-        self.init_state_train = params.get('init_state_train', True)
 
         # ----------------------------------
         # Load weights path
@@ -113,6 +91,29 @@ class RNN(object):
         else:
             self.initializer = params.get('initializer',
                                           GaussianSpectralRadius(**params))
+
+        # ----------------------------------
+        # Dale's law matrix
+        # ----------------------------------
+        dale_vec = np.ones(N_rec)
+        if self.dale_ratio is not None:
+            dale_vec[int(self.dale_ratio * N_rec):] = -1*self.dale_ratio/(1-self.dale_ratio)
+            self.dale_rec = np.diag(dale_vec) / np.linalg.norm(np.matmul(self.initializer.initializations['rec_connectivity'], np.diag(dale_vec)), axis=1)[:,np.newaxis]
+            dale_vec[int(self.dale_ratio * N_rec):] = 0
+            self.dale_out = np.diag(dale_vec)
+        else:
+            self.dale_rec = np.diag(dale_vec)
+            self.dale_out = np.diag(dale_vec)
+
+        # ----------------------------------
+        # Trainable features
+        # ----------------------------------
+        self.W_in_train = params.get('W_in_train', True)
+        self.W_rec_train = params.get('W_rec_train', True)
+        self.W_out_train = params.get('W_out_train', True)
+        self.b_rec_train = params.get('b_rec_train', True)
+        self.b_out_train = params.get('b_out_train', True)
+        self.init_state_train = params.get('init_state_train', True)
 
         # --------------------------------------------------
         # Tensorflow input/output placeholder initializations
@@ -270,20 +271,24 @@ class RNN(object):
         return self.initializer.initializations
 
     def get_weights(self):
-        if not self.is_initialized or not self.is_built:
-            raise UserWarning("No weights to return yet -- model has not yet been initialized.")
-        else:
-            weights_dict = dict()
-            
-            for var in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES):
-                # avoid saving duplicates
-                if var.name.endswith(':0') and var.name.startswith(self.name):
-                    name = var.name[len(self.name)+1:-2]
-                    weights_dict.update({name: var.eval(session=self.sess)})
-            weights_dict.update({'W_rec': self.get_effective_W_rec().eval(session=self.sess)})
-            weights_dict.update({'W_in': self.get_effective_W_in().eval(session=self.sess)})
-            weights_dict.update({'W_out': self.get_effective_W_out().eval(session=self.sess)})
-            return weights_dict
+
+        if not self.is_built:
+            raise UserWarning("Must build network before training. Call build() before calling train().")
+
+        if not self.is_initialized:
+            self.sess.run(tf.global_variables_initializer())
+       
+        weights_dict = dict()
+        
+        for var in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES):
+            # avoid saving duplicates
+            if var.name.endswith(':0') and var.name.startswith(self.name):
+                name = var.name[len(self.name)+1:-2]
+                weights_dict.update({name: var.eval(session=self.sess)})
+        weights_dict.update({'W_rec': self.get_effective_W_rec().eval(session=self.sess)})
+        weights_dict.update({'W_in': self.get_effective_W_in().eval(session=self.sess)})
+        weights_dict.update({'W_out': self.get_effective_W_out().eval(session=self.sess)})
+        return weights_dict
 
     def save(self, save_path):
 
