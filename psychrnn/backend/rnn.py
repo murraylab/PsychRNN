@@ -271,24 +271,20 @@ class RNN(object):
         return self.initializer.initializations
 
     def get_weights(self):
-
-        if not self.is_built:
-            raise UserWarning("Must build network before training. Call build() before calling train().")
-
-        if not self.is_initialized:
-            self.sess.run(tf.global_variables_initializer())
-       
-        weights_dict = dict()
-        
-        for var in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES):
-            # avoid saving duplicates
-            if var.name.endswith(':0') and var.name.startswith(self.name):
-                name = var.name[len(self.name)+1:-2]
-                weights_dict.update({name: var.eval(session=self.sess)})
-        weights_dict.update({'W_rec': self.get_effective_W_rec().eval(session=self.sess)})
-        weights_dict.update({'W_in': self.get_effective_W_in().eval(session=self.sess)})
-        weights_dict.update({'W_out': self.get_effective_W_out().eval(session=self.sess)})
-        return weights_dict
+        if not self.is_initialized or not self.is_built:
+            raise UserWarning("No weights to return yet -- model has not yet been initialized.")
+        else:
+            weights_dict = dict()
+            
+            for var in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES):
+                # avoid saving duplicates
+                if var.name.endswith(':0') and var.name.startswith(self.name):
+                    name = var.name[len(self.name)+1:-2]
+                    weights_dict.update({name: var.eval(session=self.sess)})
+            weights_dict.update({'W_rec': self.get_effective_W_rec().eval(session=self.sess)})
+            weights_dict.update({'W_in': self.get_effective_W_in().eval(session=self.sess)})
+            weights_dict.update({'W_out': self.get_effective_W_out().eval(session=self.sess)})
+            return weights_dict
 
     def save(self, save_path):
 
