@@ -12,7 +12,7 @@ Code is written and upkept by: @davidbrandfonbrener @dbehrlic @ABAtanasov @syncr
 
 ## Getting Started
 
-You can try out PsychRNN without downloading anything using our example notebook that runs in the browser on Google Colab. [https://colab.research.google.com/github/dbehrlich/PsychRNN/blob/master/psychrnn/notebooks/collaboratory_RDM.ipynb](Open In Colab)
+You can try out PsychRNN without downloading anything using our example notebook that runs in the browser on Google Colab. Try it here: https://colab.research.google.com/github/dbehrlich/PsychRNN/blob/master/psychrnn/notebooks/collaboratory_RDM.ipynb
 
 ## Install
 
