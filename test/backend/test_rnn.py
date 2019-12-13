@@ -2,14 +2,22 @@ import pytest
 import tensorflow as tf
 from psychrnn.backend.rnn import RNN
 from psychrnn.backend.initializations import GaussianSpectralRadius
-from psychrnn.tasks import rdm as rd  
+from psychrnn.tasks.perceptual_decision_making import PerceptualDecisionMaking
 from pytest_mock import mocker
+
+import sys
+
+if sys.version_info[0] == 2:
+    from mock import patch
+else:
+    from unittest.mock import patch
+
 
 # clears tf graph after each test.
 @pytest.fixture()
 def tf_graph():
     yield
-    tf.reset_default_graph()
+    tf.compat.v1.reset_default_graph()
 
 def get_params():
 	params = {}
@@ -33,6 +41,7 @@ def extend_params(params):
 	params['init_state_train'] = False
 	return params
 
+@patch.object(RNN, '__abstractmethods__', set())
 def test_minimal_info_rnn(tf_graph):
 	params = get_params()
 	del params['name']
@@ -86,17 +95,19 @@ def test_minimal_info_rnn(tf_graph):
 	params = get_params()
 	RNN(params)
 
+@patch.object(RNN, '__abstractmethods__', set())
 def test_extra_info_rnn(tf_graph):
 	params = get_params()
 	params = extend_params(params)
 	RNN(params)
 
 #TODO(Jasmine): test load weights after testing save weights in train
+@patch.object(RNN, '__abstractmethods__', set())
 def test_load_weights_path_rnn(tf_graph,mocker,tmpdir, capfd):
 	params = get_params()
 
-	rdm1 = rd.RDM(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
-	gen1 = rdm1.batch_generator()
+	pdm1 = PerceptualDecisionMaking(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = pdm1.batch_generator()
 
 	mocker.patch.object(RNN, 'forward_pass')
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
@@ -133,15 +144,17 @@ def test_load_weights_path_rnn(tf_graph,mocker,tmpdir, capfd):
 	tmpdir.dirpath("save_weights.npz").remove()
 	
 
+@patch.object(RNN, '__abstractmethods__', set())
 def test_initializer_rnn(tf_graph):
 	params = get_params()
 	params = extend_params(params)
 	params['initializer'] = GaussianSpectralRadius(N_in=params['N_in'], N_rec=params['N_rec'], N_out=params['N_out'],autapses=True, spec_rad=1.1)
 	RNN(params)
 
+@patch.object(RNN, '__abstractmethods__', set())
 def test_build(tf_graph, mocker):
-	rdm = rd.RDM(dt = 10, tau = 100, T = 2000, N_batch = 128)  
-	gen = rdm.batch_generator()
+	pdm = PerceptualDecisionMaking(dt = 10, tau = 100, T = 2000, N_batch = 128)  
+	gen = pdm.batch_generator()
 
 	params = get_params()
 	rnn = RNN(params)
@@ -149,6 +162,7 @@ def test_build(tf_graph, mocker):
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
 	rnn.build()
 
+@patch.object(RNN, '__abstractmethods__', set())
 def test_destruct(tf_graph, mocker):
 	params = get_params()
 	rnn1 = RNN(params)
@@ -160,20 +174,7 @@ def test_destruct(tf_graph, mocker):
 	rnn2.destruct()
 	rnn3 = RNN(params)
 
-def test_recurrent_timestep(tf_graph):
-	params = get_params()
-	rnn = RNN(params)
-	with pytest.raises(UserWarning) as excinfo:
-		rnn.recurrent_timestep(1,2)
-	assert 'recurrent_timestep' in str(excinfo.value)
-
-def test_output_timestep(tf_graph):
-	params = get_params()
-	rnn = RNN(params)
-	with pytest.raises(UserWarning) as excinfo:
-		rnn.output_timestep(1)
-	assert 'output_timestep' in str(excinfo.value)
-
+@patch.object(RNN, '__abstractmethods__', set())
 def test_forward_pass(tf_graph):
 	params = get_params()
 	rnn = RNN(params)
@@ -181,35 +182,27 @@ def test_forward_pass(tf_graph):
 		rnn.forward_pass()
 	assert 'forward_pass' in str(excinfo.value)
 
+@patch.object(RNN, '__abstractmethods__', set())
 def test_get_weights(tf_graph,mocker):
 	params = get_params()
 	rnn = RNN(params)
-	with pytest.raises(UserWarning) as excinfo:
-		rnn.get_weights()
-	assert 'No weights to return yet -- model has not yet been initialized.' in str(excinfo.value)
+	
 	mocker.patch.object(RNN, 'forward_pass')
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
-	rnn.build()
-	with pytest.raises(UserWarning) as excinfo:
-		rnn.get_weights()
-	assert 'No weights to return yet -- model has not yet been initialized.' in str(excinfo.value)
-	rdm1 = rd.RDM(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
-	gen1 = rdm1.batch_generator()
-	rnn.train(gen1)
+
 	assert type(rnn.get_weights()) is dict
 
+@patch.object(RNN, '__abstractmethods__', set())
 def test_save(tf_graph, mocker, tmpdir):
 	save_weights_path = str(tmpdir.dirpath("save_weights.npz"))
 	params = get_params()
 	rnn = RNN(params)
-	with pytest.raises(UserWarning) as excinfo:
-		rnn.save(save_weights_path)
-	assert "No weights to return" in str(excinfo.value)
+
 	mocker.patch.object(RNN, 'forward_pass')
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
-	rnn.build()
-	rdm1 = rd.RDM(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
-	gen1 = rdm1.batch_generator()
+	
+	pdm1 = PerceptualDecisionMaking(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = pdm1.batch_generator()
 	rnn.train(gen1)
 
 	assert not tmpdir.dirpath("save_weights.npz").check(exists=1)
@@ -218,35 +211,35 @@ def test_save(tf_graph, mocker, tmpdir):
 
 	tmpdir.dirpath("save_weights.npz").remove()
 
+@patch.object(RNN, '__abstractmethods__', set())
 def test_train(tf_graph, mocker, capfd):
-	rdm = rd.RDM(dt = 10, tau = 100, T = 2000, N_batch = 128)  
-	gen = rdm.batch_generator()
+	pdm = PerceptualDecisionMaking(dt = 10, tau = 100, T = 2000, N_batch = 128)  
+	gen = pdm.batch_generator()
 
 	params = get_params()
 	rnn = RNN(params)
-	with pytest.raises(UserWarning) as excinfo:
-		rnn.train(gen)
-	assert 'build' in str(excinfo.value)
 
 	mocker.patch.object(RNN, 'forward_pass')
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
-	rnn.build()
 
-	rdm1 = rd.RDM(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
-	gen1 = rdm1.batch_generator()
+	pdm1 = PerceptualDecisionMaking(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = pdm1.batch_generator()
 	assert rnn.is_initialized is False
+	assert rnn.is_built is False
 	rnn.train(gen1)
 	assert rnn.is_initialized is True
+	assert rnn.is_built is True
 	out, _ = capfd.readouterr()
 	assert out != ""
 
+@patch.object(RNN, '__abstractmethods__', set())
 def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
 	params = get_params()
 
-	rdm1 = rd.RDM(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
-	gen1 = rdm1.batch_generator()
-	rdm2 = rd.RDM(dt = params['dt'], tau = params['tau'], T = 1000, N_batch = params['N_batch'])
-	gen2 = rdm2.batch_generator()
+	pdm1 = PerceptualDecisionMaking(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = pdm1.batch_generator()
+	pdm2 = PerceptualDecisionMaking(dt = params['dt'], tau = params['tau'], T = 1000, N_batch = params['N_batch'])
+	gen2 = pdm2.batch_generator()
 
 	mocker.patch.object(RNN, 'forward_pass')
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
@@ -258,12 +251,12 @@ def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
 	train_params['save_weights_path'] =  str(tmpdir.dirpath("save_weights.npz")) # Where to save the model after training. Default: None
 	train_params['training_iters'] = 1000 # number of iterations to train for Default: 10000
 	train_params['learning_rate'] = .01 # Sets learning rate if use default optimizer Default: .001
-	train_params['loss_epoch'] = 20 # Compute and record loss every 'loss_epoch' epochs. Default: 10
+	train_params['loss_epoch'] = 20 # Compute and recopd loss every 'loss_epoch' epochs. Default: 10
 	train_params['verbosity'] = False
 	train_params['save_training_weights_epoch'] = 10 # save training weights every 'save_training_weights_epoch' epochs. Default: 100
 	train_params['training_weights_path'] = str(tmpdir.dirpath("training_weights")) # where to save training weights as training progresses. Default: None
 	train_params['generator_function'] = gen2 # replaces trial_batch_generator with the generator_function when not none. Default: None
-	train_params['optimizer'] = tf.train.AdamOptimizer(learning_rate=train_params['learning_rate']) # What optimizer to use to compute gradients. Default: tf.train.AdamOptimizer(learning_rate=train_params['learning_rate'])
+	train_params['optimizer'] = tf.compat.v1.train.AdamOptimizer(learning_rate=train_params['learning_rate']) # What optimizer to use to compute gradients. Default: tf.train.AdamOptimizer(learning_rate=train_params['learning_rate'])
 	train_params['clip_grads'] = False # If true, clip gradients by norm 1. Default: True
 	
 	assert not tmpdir.dirpath("save_weights.npz").check(exists=1)
@@ -280,20 +273,17 @@ def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
 
 
 
+@patch.object(RNN, '__abstractmethods__', set())
 def test_test(mocker):
-	rdm = rd.RDM(dt = 10, tau = 100, T = 2000, N_batch = 128)  
-	gen = rdm.batch_generator()
+	pdm = PerceptualDecisionMaking(dt = 10, tau = 100, T = 2000, N_batch = 128)  
+	gen = pdm.batch_generator()
 	x,y,m,p = next(gen)
 
 	params = get_params()
 	rnn = RNN(params)
-	with pytest.raises(UserWarning) as excinfo:
-		rnn.test(x)
-	assert 'build' in str(excinfo.value)
 	
 	mocker.patch.object(RNN, 'forward_pass')
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
-	rnn.build()
 
 	rnn.test(x)
 
