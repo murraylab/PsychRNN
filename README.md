@@ -1,5 +1,5 @@
 # PsychRNN
-[![Build Status](https://api.travis-ci.com/dbehrlich/PsychRNN.svg?branch=master)](https://api.travis-ci.com/dbehrlich/PsychRNN)
+[![Build Status](https://api.travis-ci.com/murraylab/PsychRNN.svg?branch=master)](https://api.travis-ci.com/murraylab/PsychRNN)
 [![codecov](https://codecov.io/gh/murraylab/PsychRNN/branch/master/graph/badge.svg)](https://codecov.io/gh/murraylab/PsychRNN)
 
 This package is intended to help cognitive scientist easily translate task designs from human or primate behavioral experiments into a form capable of being used as training data for a recurrent neural network.
