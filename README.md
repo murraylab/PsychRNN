@@ -31,7 +31,7 @@ For Demos:
 
 ### Installation
 
-git clone https://github.com/murraylab/PsychRNN.git 
+git clone https://github.com/murraylab/PsychRNN.git  
 cd PsychRNN   
 python setup.py install
 
