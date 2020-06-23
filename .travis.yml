@@ -4,21 +4,21 @@ python:
   - "2.7"
   - "3.6"
 
+env:
+  - TF=1.14
+  - TF=2.0
+
 install:
   - pip install pytest_mock
   - pip install pytest_cov
   - pip install codecov 
   - pip install numpy
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-      pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.11.0-cp27-none-linux_x86_64.whl;
-    elif [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then
-      pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.11.0-cp36-cp36m-linux_x86_64.whl;
-    fi
+  - pip install tensorflow==$TF
   - export PYTHONPATH=$PYTHONPATH:$(pwd)
   - python setup.py install
 
 script:
   - pytest --cov-report=xml --cov=psychrnn/ 
-  
+
 after_success:
   - codecov
