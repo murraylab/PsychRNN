@@ -95,6 +95,32 @@ html_sidebars = { '**': ['customtoc.html', 'localtoc.html','relations.html', 'se
 
 
 # This is processed by Jinja2 and inserted before each notebook
+nbsphinx_prolog = r"""
+{% set docname = 'docs/' + env.doc2path(env.docname, base=None) %}
+
+.. raw:: html
+    <div class="admonition note">
+      This page was generated from
+      <a class="reference external" href="https://github.com/murraylab/PsychRNN/blob/read_docs/{{ docname|e }}">{{ docname|e }}</a>.
+      Interactive online version:
+      <a href="https://colab.research.google.com/github/murraylab/PsychRNN/blob/read_docs/{{ docname|e }}">
+        <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+      </a>
+      <script>
+        if (document.location.host) {
+          $(document.currentScript).replaceWith(
+            '<a class="reference external" ' +
+            'href="https://nbviewer.jupyter.org/url' +
+            (window.location.protocol == 'https:' ? 's/' : '/') +
+            window.location.host +
+            window.location.pathname.slice(0, -4) +
+            'ipynb">View in <em>nbviewer</em></a>.'
+          );
+        }
+      </script>
+    </div>
+"""
+
 # nbsphinx_prolog = r"""
 # {% set docname = 'doc/' + env.doc2path(env.docname, base=None) %}
 
@@ -102,9 +128,9 @@ html_sidebars = { '**': ['customtoc.html', 'localtoc.html','relations.html', 'se
 
 #     <div class="admonition note">
 #       This page was generated from
-#       <a class="reference external" href="https://github.com/syncrostone/PsychRNNPublication/blob/{{ env.config.release|e }}/{{ docname|e }}">{{ docname|e }}</a>.
+#       <a class="reference external" href="https://github.com/murraylab/PsychRNN/blob/{{ env.config.release|e }}/{{ docname|e }}">{{ docname|e }}</a>.
 #       Interactive online version:
-#       <a href="https://mybinder.org/v2/gh/syncrostone/PsychRNNPublication/{{ env.config.release|e }}?filepath={{ docname|e }}"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a>.
+#       <a href="https://colab.research.google.com/github/murraylab/PsychRNN/blob/{{ env.config.release|e }}?filepath={{ docname|e }}"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a>.
 #       <script>
 #         if (document.location.host) {
 #           $(document.currentScript).replaceWith(
