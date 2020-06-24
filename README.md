@@ -1,6 +1,7 @@
 # PsychRNN
 [![Build Status](https://api.travis-ci.com/murraylab/PsychRNN.svg?branch=master)](https://api.travis-ci.com/murraylab/PsychRNN)
 [![codecov](https://codecov.io/gh/murraylab/PsychRNN/branch/master/graph/badge.svg)](https://codecov.io/gh/murraylab/PsychRNN)
+[![Documentation Status](https://readthedocs.org/projects/psychrnn/badge/?version=latest)](https://psychrnn.readthedocs.io/en/latest/?badge=latest)
 
 **Updated code, documentation, and preprint coming July 2020!**
 
