@@ -6,13 +6,13 @@ System requirements
 
 - python = 2.7 or 3.6
 - `numpy <http://www.numpy.org/>`_
-- `tensorflow <https://www.tensorflow.org/>`_ = 1.11 or 2.0.0
+- `tensorflow <https://www.tensorflow.org/>`_ >= 1.14
 
 - For notebook demos, `jupyter <https://jupyter.org/>`_
 - For notebook demos, `ipython <https://ipython.org/>`_
 - For plotting features, `matplotlib <https://matplotlib.org/>`_
 
-PsychRNN was developed in python 2.7 and 3.6, using tensorflow 1.11, but is also compatible with tensorflow 2.0.0. General compatibility is expected for python 2 and 3 and tensorflow 1 and 2. 
+PsychRNN was developed to work with both python 2.7 and 3.6 using tensorflow 1.14 and 2.0. General compatibility is expected for python 2 and 3 and tensorflow 1.14, 1.15 and 2.
 
 Installation
 ------------
