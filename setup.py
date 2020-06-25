@@ -16,8 +16,8 @@ setup(
     long_description=long_desc,
     long_description_content_type='text/markdown',
 
-    author="Alex Atanasov, David Brandfonbrener, Daniel Ehrlich, Jasmine Stone",
-    author_email="daniel.ehrlich@yale.edu",
+    author="Daniel Ehrlich, Jasmine Stone, Alex Atanasov, David Brandfonbrener",
+    author_email="psychrnn@gmail.com",
     description="Easy-to-use package for the modeling and analysis of neural network dynamics, directed towards cognitive neuroscientists.",
     keywords="neuroscience, modeling, analysis, neural networks",
     url="https://github.com/murraylab/PsychRNN",
