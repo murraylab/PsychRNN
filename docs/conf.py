@@ -102,7 +102,7 @@ nbsphinx_prolog = r"""
       This page was generated from
       <a class="reference external" href="https://github.com/murraylab/PsychRNN/blob/read_docs/{{ docname|e }}">{{ docname|e }}</a>.
       Interactive online version:
-      <a href="https://colab.research.google.com/github/murraylab/PsychRNN/blob/read_docs/{{ docname|e }}?blob=read_docs"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>.
+      <a href="https://colab.research.google.com/github/murraylab/PsychRNN/blob/read_docs/{{ docname|e }}"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>.
       <script>
         if (document.location.host) {
           $(document.currentScript).replaceWith(
