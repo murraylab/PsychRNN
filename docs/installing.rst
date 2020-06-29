@@ -19,15 +19,20 @@ Installation
 
 Normally, you can install with: ::
 
-	pip install --index-url https://test.pypi.org/simple/ psychrnn=1.0.0-alpha
+	pip install psychrnn={release}
 
-Alternatively, you can clone and install the source files via the `GitHub repository <https://github.com/murraylab/psychrnn/blob/|release|>`_:
+Alternatively, you can download and extract the source files from the `GitHub release <https://github.com/murraylab/psychrnn/releases/tag/v{release}>`_. Within the downloaded PsychRNN-v{release} folder, run: ::
+
+        python setup.py install
+
+[THIS OPTION IS NOT RECOMMENDED FOR MOST USERS] To get the most recent (not necessarily stable) version from the github repo, clone the repository and install:
 
 .. code-block:: bash
 
         git clone https://github.com/murraylab/PsychRNN.git
         cd PsychRNN
         python setup.py install
+
 
 Contributing
 ------------

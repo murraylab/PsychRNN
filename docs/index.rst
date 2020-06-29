@@ -7,11 +7,11 @@ Welcome to PsychRNN's documentation!
 ====================================
 
 
-.. image:: https://api.travis-ci.com/murraylab/PsychRNN.svg?branch=|release|
+.. image:: https://api.travis-ci.com/murraylab/PsychRNN.svg?branch=v{release}
     :target: https://api.travis-ci.com/murraylab/PsychRNN
     :alt: Build Status
 
-.. image:: :codecov:|release|
+.. image:: https://codecov.io/gh/murraylab/PsychRNN/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/murraylab/PsychRNN
     :alt: codecov
 
