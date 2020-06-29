@@ -44,7 +44,7 @@ pull requests) for bugs are greatly appreciated.
 Feature requests are welcome but may or may not be accepted due to limited
 resources. If you implement the feature yourself we are open
 to accepting it in PsychRNN.  If you implement a new feature in PsychRNN,
-please do the following before submitting a pull request on Github:
+please do the following before submitting a pull request on GitHub:
 
 - Make sure your code is clean and well commented
 - If appropriate, update the official documentation in the ``docs/``
