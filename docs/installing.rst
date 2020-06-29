@@ -17,7 +17,11 @@ PsychRNN was developed to work with both python 2.7 and 3.6 using tensorflow 1.1
 Installation
 ------------
 
-Clone and install the source files via the `GitHub repository <https://github.com/murraylab/psychrnn/blob/|release|>`_:
+Normally, you can install with: ::
+
+	pip install --index-url https://test.pypi.org/simple/ psychrnn=1.0.0-alpha
+
+Alternatively, you can clone and install the source files via the `GitHub repository <https://github.com/murraylab/psychrnn/blob/|release|>`_:
 
 .. code-block:: bash
 

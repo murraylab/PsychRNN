@@ -11,6 +11,12 @@ ABC = ABCMeta('ABC', (object,), {})
 class Task(ABC):
     """ The base task class.
 
+    The base task class provides the structure that users can use to\
+    define a new task. This structure is used by example tasks \
+    :class:`~psychrnn.tasks.perceptual_decision_making.PerceptualDecisionMaking`, \
+    :class:`~psychrnn.tasks.match_to_category.MatchToCategory`, \
+    and :class:`~psychrnn.tasks.delayed_discrim.DelayedDiscrimination`.
+
     Note:
         The base task class is not itself a functioning task. 
         The generate_trial_params and trial_function must be defined to define a new, functioning, task.
@@ -50,7 +56,7 @@ class Task(ABC):
         """ Get dictionary of task parameters.
 
         Note:
-            N_in, N_out, N_batch, dt, tau and N_steps must all be passed to the network model as parameters, so this function is a good start for network_params.
+            N_in, N_out, N_batch, dt, tau and N_steps must all be passed to the network model as parameters -- this function is the recommended way to begin building the network_params that will be passed into the RNN model.
 
 
         Returns:
@@ -79,7 +85,7 @@ class Task(ABC):
         Using a combination of randomness, presets, and task attributes, define the necessary trial parameters.
 
         Args:
-            batch (int): The batch number that this trial is part of.
+            batch (int): The batch number for this trial.
             trial (int): The trial number of the trial within the batch data:`batch`.
 
         Returns:
