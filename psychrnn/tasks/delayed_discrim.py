@@ -6,8 +6,10 @@ import numpy as np
 class DelayedDiscrimination(Task):
     """Delayed discrimination task. 
 
+    Following a fore period, the network receives an input, followed by a delay. After the delay the network receives a second input. The second input channel receives noisy input that is inversely ordered compared to the input received by the first input channel. The network must respond by activating the output node that corresponds to the input channel with the greater input as the first stimulus.
+
     Takes two channels of noisy input (:attr:`N_in` = 2).
-    Two channel output (:attr:`N_out` = 2) with a one hot encoding (high value is 1, low value is .2) towards the higher mean channel.
+    Two channel output (:attr:`N_out` = 2) with a one hot encoding (high value is 1, low value is .2).
 
     Loosely based on `Romo, R., Brody, C. D., Hernández, A., & Lemus, L. (1999). Neuronal correlates of 
     parametric working memory in the prefrontal cortex. Nature, 399(6735), 470. <https://www.nature.com/articles/20939>`_

@@ -6,8 +6,12 @@ import numpy as np
 class PerceptualDecisionMaking(Task):
     """Two alternative forced binary decision-making task. 
 
+    On each trial the network receives two simultaneous noisy inputs into each of two input channels. The network must determine which channel has the higher mean input and respond by driving the corresponding output unit to 1.
+
     Takes two channels of noisy input (:attr:`N_in` = 2).
     Two channel output (:attr:`N_out` = 2) with a one hot encoding (high value is 1, low value is .2) towards the higher mean channel.
+
+    Loosely based on `Britten, Kenneth H., et al. "The analysis of visual motion: a comparison of neuronal and psychophysical performance." Journal of Neuroscience 12.12 (1992): 4745-4765 <https://www.jneurosci.org/content/12/12/4745>`_
 
     Args:
         dt (float): The simulation timestep.
