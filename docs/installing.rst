@@ -17,7 +17,7 @@ PsychRNN was developed to work with both python 2.7 and 3.6 using tensorflow 1.1
 Installation
 ------------
 
-Normally, you can install with ::
+Normally, you can install with: ::
 
 	pip install --index-url https://test.pypi.org/simple/ psychrnn=1.0.0-alpha
 
@@ -26,7 +26,7 @@ Normally, you can install with ::
 ..     pip install pyddm
 
 
-Clone and install the source files via the `GitHub repository <https://github.com/murraylab/psychrnn>`_:
+Alternatively, you can clone and install the source files via the `GitHub repository <https://github.com/murraylab/psychrnn>`_:
 
 .. code-block:: bash
 
