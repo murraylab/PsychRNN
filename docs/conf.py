@@ -36,15 +36,16 @@ release = __version__
 # ones.
 extensions = [
 	'sphinx.ext.autodoc',
-    'sphinx.ext.coverage',
-    'sphinx.ext.imgmath',
-    'sphinx.ext.viewcode',
-    'nbsphinx',
-    'sphinx.ext.mathjax',
-    'sphinx_copybutton',
-    "sphinx_rtd_theme",
-    'sphinxcontrib.napoleon',
-    'autodocsumm',
+  'sphinx.ext.coverage',
+  'sphinx.ext.imgmath',
+  'sphinx.ext.viewcode',
+  'nbsphinx',
+  'sphinx.ext.mathjax',
+  'sphinx_copybutton',
+  "sphinx_rtd_theme",
+  'sphinxcontrib.napoleon',
+  'autodocsumm',
+  'sphinx.ext.extlinks',
 ]
 
 #include autosummary by defualt
@@ -118,7 +119,16 @@ nbsphinx_prolog = r"""
     </div>
 """
 
+
 # replace read_docs with {{ env.config.release|e }} before release.
+
+rst_epilog = """
+.. |release| replace:: v{releasenum}
+""".format(
+releasenum = release,
+)
+
+extlinks = {'codecov': ('https://codecov.io/gh/murraylab/PsychRNN/branch/%s/graph/badge.svg', None)}
 
 # Napoleon settings
 napoleon_google_docstring = True
