@@ -15,7 +15,7 @@ def tf_graph():
 
 def reset_seeds(seed):
 	tf.compat.v1.reset_default_graph()
-	tf.compat.v2.random.set_seed(seed)
+	tf.compat.v1.set_random_seed(seed)
 	random.seed(seed)
 	np.random.seed(seed)
 
