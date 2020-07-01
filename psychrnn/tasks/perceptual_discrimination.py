@@ -3,7 +3,7 @@ from __future__ import division
 from psychrnn.tasks.task import Task
 import numpy as np
 
-class PerceptualDecisionMaking(Task):
+class PerceptualDiscrimination(Task):
     """Two alternative forced binary decision-making task. 
 
     On each trial the network receives two simultaneous noisy inputs into each of two input channels. The network must determine which channel has the higher mean input and respond by driving the corresponding output unit to 1.
@@ -24,7 +24,7 @@ class PerceptualDecisionMaking(Task):
     """
 
     def __init__(self, dt, tau, T, N_batch, coherence = None, direction = None):
-        super(PerceptualDecisionMaking,self).__init__(2, 2, dt, tau, T, N_batch)
+        super(PerceptualDiscrimination,self).__init__(2, 2, dt, tau, T, N_batch)
         
         self.coherence = coherence
 

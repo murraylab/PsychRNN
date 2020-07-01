@@ -2,7 +2,7 @@ import pytest
 import tensorflow as tf
 from psychrnn.backend.rnn import RNN
 from psychrnn.backend.initializations import GaussianSpectralRadius
-from psychrnn.tasks.perceptual_decision_making import PerceptualDecisionMaking
+from psychrnn.tasks.perceptual_discrimination import PerceptualDiscrimination
 from pytest_mock import mocker
 
 import sys
@@ -106,8 +106,8 @@ def test_extra_info_rnn(tf_graph):
 def test_load_weights_path_rnn(tf_graph,mocker,tmpdir, capfd):
 	params = get_params()
 
-	pdm1 = PerceptualDecisionMaking(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
-	gen1 = pdm1.batch_generator()
+	pd1 = PerceptualDiscrimination(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = pd1.batch_generator()
 
 	mocker.patch.object(RNN, 'forward_pass')
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
@@ -153,8 +153,8 @@ def test_initializer_rnn(tf_graph):
 
 @patch.object(RNN, '__abstractmethods__', set())
 def test_build(tf_graph, mocker):
-	pdm = PerceptualDecisionMaking(dt = 10, tau = 100, T = 2000, N_batch = 128)  
-	gen = pdm.batch_generator()
+	pd = PerceptualDiscrimination(dt = 10, tau = 100, T = 2000, N_batch = 128)  
+	gen = pd.batch_generator()
 
 	params = get_params()
 	rnn = RNN(params)
@@ -201,8 +201,8 @@ def test_save(tf_graph, mocker, tmpdir):
 	mocker.patch.object(RNN, 'forward_pass')
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
 	
-	pdm1 = PerceptualDecisionMaking(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
-	gen1 = pdm1.batch_generator()
+	pd1 = PerceptualDiscrimination(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = pd1.batch_generator()
 	rnn.train(gen1)
 
 	assert not tmpdir.dirpath("save_weights.npz").check(exists=1)
@@ -213,8 +213,8 @@ def test_save(tf_graph, mocker, tmpdir):
 
 @patch.object(RNN, '__abstractmethods__', set())
 def test_train(tf_graph, mocker, capfd):
-	pdm = PerceptualDecisionMaking(dt = 10, tau = 100, T = 2000, N_batch = 128)  
-	gen = pdm.batch_generator()
+	pd = PerceptualDiscrimination(dt = 10, tau = 100, T = 2000, N_batch = 128)  
+	gen = pd.batch_generator()
 
 	params = get_params()
 	rnn = RNN(params)
@@ -222,8 +222,8 @@ def test_train(tf_graph, mocker, capfd):
 	mocker.patch.object(RNN, 'forward_pass')
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
 
-	pdm1 = PerceptualDecisionMaking(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
-	gen1 = pdm1.batch_generator()
+	pd1 = PerceptualDiscrimination(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = pd1.batch_generator()
 	assert rnn.is_initialized is False
 	assert rnn.is_built is False
 	rnn.train(gen1)
@@ -236,10 +236,10 @@ def test_train(tf_graph, mocker, capfd):
 def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
 	params = get_params()
 
-	pdm1 = PerceptualDecisionMaking(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
-	gen1 = pdm1.batch_generator()
-	pdm2 = PerceptualDecisionMaking(dt = params['dt'], tau = params['tau'], T = 1000, N_batch = params['N_batch'])
-	gen2 = pdm2.batch_generator()
+	pd1 = PerceptualDiscrimination(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = pd1.batch_generator()
+	pd2 = PerceptualDiscrimination(dt = params['dt'], tau = params['tau'], T = 1000, N_batch = params['N_batch'])
+	gen2 = pd2.batch_generator()
 
 	mocker.patch.object(RNN, 'forward_pass')
 	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
@@ -275,8 +275,8 @@ def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
 
 @patch.object(RNN, '__abstractmethods__', set())
 def test_test(mocker):
-	pdm = PerceptualDecisionMaking(dt = 10, tau = 100, T = 2000, N_batch = 128)  
-	gen = pdm.batch_generator()
+	pd = PerceptualDiscrimination(dt = 10, tau = 100, T = 2000, N_batch = 128)  
+	gen = pd.batch_generator()
 	x,y,m,p = next(gen)
 
 	params = get_params()
