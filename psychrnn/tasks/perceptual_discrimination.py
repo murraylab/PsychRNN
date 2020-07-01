@@ -4,7 +4,7 @@ from psychrnn.tasks.task import Task
 import numpy as np
 
 class PerceptualDiscrimination(Task):
-    """Two alternative forced binary decision-making task. 
+    """Two alternative forced choice (2AFC) binary discrimination task. 
 
     On each trial the network receives two simultaneous noisy inputs into each of two input channels. The network must determine which channel has the higher mean input and respond by driving the corresponding output unit to 1.
 
