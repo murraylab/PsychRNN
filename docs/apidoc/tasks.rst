@@ -29,10 +29,10 @@ Match to Category Task
    :undoc-members:
    :show-inheritance:
 
-Perceptual Decision Making Task
+Perceptual Discrimination Task
 --------------------------------------------------
 
-.. automodule:: psychrnn.tasks.perceptual_decision_making
+.. automodule:: psychrnn.tasks.perceptual_discrimination
    :members:
    :undoc-members:
    :show-inheritance:

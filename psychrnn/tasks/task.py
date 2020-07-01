@@ -13,7 +13,7 @@ class Task(ABC):
 
     The base task class provides the structure that users can use to\
     define a new task. This structure is used by example tasks \
-    :class:`~psychrnn.tasks.perceptual_decision_making.PerceptualDecisionMaking`, \
+    :class:`~psychrnn.tasks.perceptual_discrimination.PerceptualDiscrimination`, \
     :class:`~psychrnn.tasks.match_to_category.MatchToCategory`, \
     and :class:`~psychrnn.tasks.delayed_discrim.DelayedDiscrimination`.
 
@@ -96,7 +96,7 @@ class Task(ABC):
             This function is abstract and must be implemented in a child Task object.
 
         Example:
-            See :func:`PerceptualDecisionMaking <psychrnn.tasks.perceptual_decision_making.PerceptualDecisionMaking.generate_trial_params>`,\
+            See :func:`PerceptualDiscrimination <psychrnn.tasks.perceptual_discrimination.PerceptualDiscrimination.generate_trial_params>`,\
             :func:`MatchToCategory <psychrnn.tasks.match_to_category.MatchToCategory.generate_trial_params>`,\
             and :func:`DelayedDiscrimination <psychrnn.tasks.delayed_discrim.DelayedDiscrimination.generate_trial_params>` for example implementations.
 
@@ -124,7 +124,7 @@ class Task(ABC):
             This function is abstract and must be implemented in a child Task object.
 
         Example:
-            See :func:`PerceptualDecisionMaking <psychrnn.tasks.perceptual_decision_making.PerceptualDecisionMaking.trial_function>`,\
+            See :func:`PerceptualDiscrimination <psychrnn.tasks.perceptual_discrimination.PerceptualDiscrimination.trial_function>`,\
             :func:`MatchToCategory <psychrnn.tasks.match_to_category.MatchToCategory.trial_function>`,\
             and :func:`DelayedDiscrimination <psychrnn.tasks.delayed_discrim.DelayedDiscrimination.trial_function>` for example implementations.
         
@@ -149,7 +149,7 @@ class Task(ABC):
             This function is abstract and may optionally be implemented in a child Task object.
 
         Example:
-            See :func:`PerceptualDecisionMaking <psychrnn.tasks.perceptual_decision_making.PerceptualDecisionMaking.accuracy_function>`,\
+            See :func:`PerceptualDiscrimination <psychrnn.tasks.perceptual_discrimination.PerceptualDiscrimination.accuracy_function>`,\
             :func:`MatchToCategory <psychrnn.tasks.match_to_category.MatchToCategory.accuracy_function>`,\
             and :func:`DelayedDiscrimination <psychrnn.tasks.delayed_discrim.DelayedDiscrimination.accuracy_function>` for example implementations.
         """
