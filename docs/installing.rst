@@ -4,15 +4,17 @@ Installation Guide
 System requirements
 -------------------
 
-- python = 2.7 or 3.6
+- python = 2.7 or python >= 3.4
 - `numpy <http://www.numpy.org/>`_
-- `tensorflow <https://www.tensorflow.org/>`_ >= 1.14
+- `tensorflow <https://www.tensorflow.org/>`_ >= 1.13.1
 
 - For notebook demos, `jupyter <https://jupyter.org/>`_
 - For notebook demos, `ipython <https://ipython.org/>`_
 - For plotting features, `matplotlib <https://matplotlib.org/>`_
 
-PsychRNN was developed to work with both python 2.7 and 3.6 using tensorflow 1.14 and 2.0. General compatibility is expected for python 2 and 3 and tensorflow 1.14, 1.15 and 2.
+PsychRNN was developed to work with both Python 2.7 and 3.4+ using TensorFlow 1.13.1+. It is currently being tested on Python 2.7 and 3.4-3.8 with TensorFlow 1.13.1-2.2.
+
+Note that TensorFlow 2.2 does not support Python < 3.5, and that only TensorFlow 1.13.1-1.14 are compatible with Python 3.4. Python 3.8 is only supported by TensorFlow 2.2.
 
 Installation
 ------------
