@@ -27,7 +27,7 @@ class Regularizer(object):
                         * **params** (*dict*) -- Regularization parameters. All params passed to the :class:`Regularizer` will be passed here.
 
                     Returns:
-                        tf.Tensor(dtype=float): The custom regularization to add when calculating the loss.
+                        tf.Tensor(dtype=float)-- The custom regularization to add when calculating the loss.
     """
 
     def __init__(self, params):
