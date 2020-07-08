@@ -25,6 +25,15 @@ Alternatively, you can download and extract the source files from the `GitHub re
 
         python setup.py install
 
+If you're concerned about clashing dependencies, PsychRNN can be installed
+in a new ``conda`` environment:
+
+.. code-block:: bash
+
+        conda create -n psychrnn python=3.6
+        conda activate psychrnn
+        pip install psychrnn={release}
+
 [THIS OPTION IS NOT RECOMMENDED FOR MOST USERS] To get the most recent (not necessarily stable) version from the github repo, clone the repository and install:
 
 .. code-block:: bash
