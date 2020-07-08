@@ -22,6 +22,6 @@ setup(
     keywords="neuroscience, modeling, analysis, neural networks",
     url="https://github.com/murraylab/PsychRNN",
 
-    install_requires=['python_version>=2.7,!=3.0*,!=3.1*,!=3.2*,!=3.3*', 'numpy', 'tensorflow']
+    install_requires=['python_version>="2.7",!="3.0*",!="3.1*",!="3.2*",!="3.3*"', 'numpy', 'tensorflow']
 
 )
