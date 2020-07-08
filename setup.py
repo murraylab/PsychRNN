@@ -21,6 +21,10 @@ setup(
     description="Easy-to-use package for the modeling and analysis of neural network dynamics, directed towards cognitive neuroscientists.",
     keywords="neuroscience, modeling, analysis, neural networks",
     url="https://github.com/murraylab/PsychRNN",
+    project_urls={
+    'Documentation': 'https://psychrnn.readthedocs.io/',
+    'Mailing List': 'https://www.freelists.org/list/psychrnn',
+    },
 
     install_requires=['python_version>="2.7",!="3.0*",!="3.1*",!="3.2*",!="3.3*"', 'numpy', 'tensorflow']
 
