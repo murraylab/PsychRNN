@@ -17,6 +17,10 @@ class LossFunction(object):
 
     def __init__(self, params):
         self.type = params.get("loss_function", "mean_squared_error")
+        if self.type != "mean_squared_error" and self.type != "binary_cross_entropy":
+            self.custom_loss_function = params.get(self.type, None)
+            if self.custom_loss_function is None:
+                raise UserWarning("Loss type is '" + self.type + "' but '" + self.type + "' is not an entry in params. Did you mean 'mean_square_error' or 'binary_cross_entropy'? If not, you must pass a function in to params as '" + self.type + "'." )
 
     def set_model_loss(self, model):
         """ Returns the model loss, calculated as indicated by :data:`params['loss_function']`.
@@ -36,8 +40,11 @@ class LossFunction(object):
         if self.type == "mean_squared_error":
             loss = self.mean_squared_error(model.predictions, model.y, model.output_mask)
 
-        if self.type == "binary_cross_entropy":
+        elif self.type == "binary_cross_entropy":
             loss = self.binary_cross_entropy(model.predictions, model.y, model.output_mask)
+
+        else:
+            loss = self.custom_loss_function(model.predictions, model.y, model.output_mask)
 
         return loss
 
