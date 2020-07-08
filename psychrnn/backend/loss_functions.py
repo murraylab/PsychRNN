@@ -11,7 +11,8 @@ class LossFunction(object):
         params(dict): Dictionary of parameters including the following keys:
 
             :Dictionary Keys:
-                * **loss_function** (*str*) -- String indicating what loss function to use. Default: "mean_squared_error".
+                * **loss_function** (*str*) -- String indicating what loss function to use. If :data:`params["loss_function"]` is not `mean_squared_error` or `binary_cross_entropy`, :data:`params[params["loss_function"]]` defines the custom loss function. Default: "mean_squared_error".
+                * **params["loss_function"]** (*function, optional*) -- Defines the custom loss function. Must have the same signature as :func:`mean_squared_error` and :func:`binary_cross_entropy`.
 
     """
 
@@ -23,9 +24,10 @@ class LossFunction(object):
                 raise UserWarning("Loss type is '" + self.type + "' but '" + self.type + "' is not an entry in params. Did you mean 'mean_square_error' or 'binary_cross_entropy'? If not, you must pass a function in to params as '" + self.type + "'." )
 
     def set_model_loss(self, model):
-        """ Returns the model loss, calculated as indicated by :data:`params['loss_function']`.
+        """ Returns the model loss, calculated as indicated by :attr:`type` (inferred from :data:`params["loss_function"]`.
 
         ``'mean_squared_error'`` indicates :func:`mean_squared_error`, ``'binary_cross_entropy'`` indicates :func:`binary_cross_entropy`.
+        If :attr:`type` is not one of the above options, :attr:`custom_loss_function` is used. The custom loss function would have been passed in to :data:`params` as :data`params[type]`
 
         Args:
             model (:class:`~psychrnn.backend.rnn.RNN` object): Model for which to calculate the regularization.
