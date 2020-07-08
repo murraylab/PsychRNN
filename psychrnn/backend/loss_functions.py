@@ -27,7 +27,7 @@ class LossFunction(object):
         """ Returns the model loss, calculated as indicated by :attr:`type` (inferred from :data:`params["loss_function"]`.
 
         ``'mean_squared_error'`` indicates :func:`mean_squared_error`, ``'binary_cross_entropy'`` indicates :func:`binary_cross_entropy`.
-        If :attr:`type` is not one of the above options, :attr:`custom_loss_function` is used. The custom loss function would have been passed in to :data:`params` as :data`params[type]`
+        If :attr:`type` is not one of the above options, :attr:`custom_loss_function` is used. The custom loss function would have been passed in to :data:`params` as :data:`params[type]`.
 
         Args:
             model (:class:`~psychrnn.backend.rnn.RNN` object): Model for which to calculate the regularization.
