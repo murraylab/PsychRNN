@@ -55,6 +55,7 @@ class RNN(ABC):
 
         :Other Dictionary Keys:
             * Any dictionary keys used by the regularizer will be passed onwards to :class:`psychrnn.backend.regularizations.Regularizer`. See :class:`~psychrnn.backend.regularizations.Regularizer` for key names and details.
+            * Any dictionary keys used for the loss function will be passed onwards to :class:`psychrnn.backend.loss_functions.LossFunction`. See :class:`~psychrnn.backend.loss_functions.LossFunction` for key names and details.
             * If :data:`initializer` is not set, any dictionary keys used by the initializer will be pased onwards to :class:`WeightInitializer <psychrnn.backend.initializations.WeightInitializer>` if :data:`load_weights_path` is set or :data:`W_rec` is passed in. Otherwise all keys will be passed to :class:`GaussianSpectralRadius <psychrnn.backend.initializations.GaussianSpectralRadius>`
             * If :data:`initializer` is not set and :data:`load_weights_path` is not set, the dictionary entries returned previously by :func:`get_weights` can be passed in to initialize the network. See :class:`WeightInitializer <psychrnn.backend.initializations.WeightInitializer>` for a list and explanation of possible parameters. At a minimum, :data:`W_rec` must be included as a key to make use of this option.
             * If :data:`initializer` is not set and :data:`load_weights_path` is not set, the following keys can be used to set biological connectivity constraints:
