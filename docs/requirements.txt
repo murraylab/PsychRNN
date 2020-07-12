@@ -1,0 +1,8 @@
+sphinx>=3.0.4
+ipykernel
+nbsphinx
+sphinx_copybutton
+sphinxcontrib.napoleon
+autodocsumm
+numpy
+tensorflow

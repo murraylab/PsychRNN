@@ -7,8 +7,12 @@ import numpy as np
 class MatchToCategory(Task):
     """ Multidirectional decision-making task.
 
+    On each trial the network receives input from units representing different locations on a ring. Each input unit magnitude represents closeness to the angle of input. The network must determine which side of arbitrary category boundaries the input belongs to and respond accordingly.
+
     Takes :attr:`N_in` channels of noisy input arranged in a ring with gaussian signal around the ring centered at 0 at the stimulus angle.
     :attr:`N_out` channel output arranged as slices of a ring with a one hot encoding towards the correct category output based on the angular location of the gaussian input bump.
+
+    Loosely based on `Freedman, David J., and John A. Assad. "Experience-dependent representation of visual categories in parietal cortex." Nature 443.7107 (2006): 85-88. <https://www.nature.com/articles/nature05078>`_
 
     Args:
         dt (float): The simulation timestep.

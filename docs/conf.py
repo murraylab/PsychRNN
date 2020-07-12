@@ -36,15 +36,15 @@ release = __version__
 # ones.
 extensions = [
 	'sphinx.ext.autodoc',
-    'sphinx.ext.coverage',
-    'sphinx.ext.imgmath',
-    'sphinx.ext.viewcode',
-    'nbsphinx',
-    'sphinx.ext.mathjax',
-    'sphinx_copybutton',
-    "sphinx_rtd_theme",
-    'sphinxcontrib.napoleon',
-    'autodocsumm',
+  'sphinx.ext.coverage',
+  'sphinx.ext.imgmath',
+  'sphinx.ext.viewcode',
+  'nbsphinx',
+  'sphinx.ext.mathjax',
+  'sphinx_copybutton',
+  "sphinx_rtd_theme",
+  'sphinxcontrib.napoleon',
+  'autodocsumm',
 ]
 
 #include autosummary by defualt
@@ -80,7 +80,7 @@ html_theme = "sphinx_rtd_theme"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = []
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -93,32 +93,45 @@ html_static_path = ['_static']
 # html_sidebars = {}
 html_sidebars = { '**': ['customtoc.html', 'localtoc.html','relations.html', 'searchbox.html', 'sourcelink.html'], }
 
+nbsphinx_prolog = r"""
+{% set docname = 'docs/' + env.doc2path(env.docname, base=None) %}
 
-# This is processed by Jinja2 and inserted before each notebook
-# nbsphinx_prolog = r"""
-# {% set docname = 'doc/' + env.doc2path(env.docname, base=None) %}
+.. raw:: html
 
-# .. raw:: html
+    <div class="admonition note">
+      This page was generated from
+      <a class="reference external" href="https://github.com/murraylab/PsychRNN/blob/{{ env.config.release|e }}/{{ docname|e }}">{{ docname|e }}</a>.
+      Interactive online version:
+      <a href="https://colab.research.google.com/github/murraylab/PsychRNN/blob/{{ env.config.release|e }}/{{ docname|e }}"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>.
+      <script>
+        if (document.location.host) {
+          $(document.currentScript).replaceWith(
+            '<a class="reference external" ' +
+            'href="https://nbviewer.jupyter.org/url' +
+            (window.location.protocol == 'https:' ? 's/' : '/') +
+            window.location.host +
+            window.location.pathname.slice(0, -4) +
+            'ipynb">View in <em>nbviewer</em></a>.'
+          );
+        }
+      </script>
+    </div>
+"""
 
-#     <div class="admonition note">
-#       This page was generated from
-#       <a class="reference external" href="https://github.com/syncrostone/PsychRNNPublication/blob/{{ env.config.release|e }}/{{ docname|e }}">{{ docname|e }}</a>.
-#       Interactive online version:
-#       <a href="https://mybinder.org/v2/gh/syncrostone/PsychRNNPublication/{{ env.config.release|e }}?filepath={{ docname|e }}"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a>.
-#       <script>
-#         if (document.location.host) {
-#           $(document.currentScript).replaceWith(
-#             '<a class="reference external" ' +
-#             'href="https://nbviewer.jupyter.org/url' +
-#             (window.location.protocol == 'https:' ? 's/' : '/') +
-#             window.location.host +
-#             window.location.pathname.slice(0, -4) +
-#             'ipynb">View in <em>nbviewer</em></a>.'
-#           );
-#         }
-#       </script>
-#     </div>
-# """
+# Taken from https://stackoverflow.com/questions/8821511/substitutions-in-sphinx-code-blocks
+def ultimateReplace(app, docname, source):
+    result = source[0]
+    for key in app.config.ultimate_replacements:
+        result = result.replace(key, app.config.ultimate_replacements[key])
+    source[0] = result
+
+ultimate_replacements = {
+    "{release}" : release
+}
+
+def setup(app):
+   app.add_config_value('ultimate_replacements', {}, True)
+   app.connect('source-read', ultimateReplace)
 
 # Napoleon settings
 napoleon_google_docstring = True
