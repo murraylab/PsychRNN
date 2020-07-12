@@ -9,6 +9,7 @@ env:
   - TF=2.0
 
 install:
+  - pip install setuptools --upgrade
   - pip install pytest_mock
   - pip install pytest_cov
   - pip install codecov 
