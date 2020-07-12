@@ -36,15 +36,15 @@ release = __version__
 # ones.
 extensions = [
 	'sphinx.ext.autodoc',
-    'sphinx.ext.coverage',
-    'sphinx.ext.imgmath',
-    'sphinx.ext.viewcode',
-    'nbsphinx',
-    'sphinx.ext.mathjax',
-    'sphinx_copybutton',
-    "sphinx_rtd_theme",
-    'sphinxcontrib.napoleon',
-    'autodocsumm',
+  'sphinx.ext.coverage',
+  'sphinx.ext.imgmath',
+  'sphinx.ext.viewcode',
+  'nbsphinx',
+  'sphinx.ext.mathjax',
+  'sphinx_copybutton',
+  "sphinx_rtd_theme",
+  'sphinxcontrib.napoleon',
+  'autodocsumm',
 ]
 
 #include autosummary by defualt
@@ -100,9 +100,9 @@ nbsphinx_prolog = r"""
 
     <div class="admonition note">
       This page was generated from
-      <a class="reference external" href="https://github.com/murraylab/PsychRNN/blob/read_docs/{{ docname|e }}">{{ docname|e }}</a>.
+      <a class="reference external" href="https://github.com/murraylab/PsychRNN/blob/{{ env.config.release|e }}/{{ docname|e }}">{{ docname|e }}</a>.
       Interactive online version:
-      <a href="https://colab.research.google.com/github/murraylab/PsychRNN/blob/read_docs/{{ docname|e }}"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>.
+      <a href="https://colab.research.google.com/github/murraylab/PsychRNN/blob/{{ env.config.release|e }}/{{ docname|e }}"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>.
       <script>
         if (document.location.host) {
           $(document.currentScript).replaceWith(
@@ -118,7 +118,20 @@ nbsphinx_prolog = r"""
     </div>
 """
 
-# replace read_docs with {{ env.config.release|e }} before release.
+# Taken from https://stackoverflow.com/questions/8821511/substitutions-in-sphinx-code-blocks
+def ultimateReplace(app, docname, source):
+    result = source[0]
+    for key in app.config.ultimate_replacements:
+        result = result.replace(key, app.config.ultimate_replacements[key])
+    source[0] = result
+
+ultimate_replacements = {
+    "{release}" : release
+}
+
+def setup(app):
+   app.add_config_value('ultimate_replacements', {}, True)
+   app.connect('source-read', ultimateReplace)
 
 # Napoleon settings
 napoleon_google_docstring = True

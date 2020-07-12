@@ -7,7 +7,7 @@ Welcome to PsychRNN's documentation!
 ====================================
 
 
-.. image:: https://api.travis-ci.com/murraylab/PsychRNN.svg?branch=master
+.. image:: https://api.travis-ci.com/murraylab/PsychRNN.svg?branch=v{release}
     :target: https://api.travis-ci.com/murraylab/PsychRNN
     :alt: Build Status
 
