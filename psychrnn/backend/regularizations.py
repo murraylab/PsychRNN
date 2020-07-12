@@ -13,13 +13,21 @@ class Regularizer(object):
        params (dict): The regularization parameters containing the following optional keys:
 
            :Dictionary Keys:
-                * **L1_in** (*float*) -- Parameter for weighting the L1 input weights regularization. Default: 0.
-                * **L1_rec** (*float*) -- Parameter for weighting the L1 recurrent weights regularization. Default: 0.
-                * **L1_out** (*float*) -- Parameter for weighting the L1 output weights regularization. Default: 0.
-                * **L2_in** (*float*) -- Parameter for weighting the L2 input weights regularization. Default: 0.
-                * **L2_rec** (*float*) -- Parameter for weighting the L2 recurrent weights regularization. Default: 0.
-                * **L2_out** (*float*) -- Parameter for weighting the L2 output weights regularization. Default: 0.
-                * **L2_firing_rate** (*float*) -- Parameter for weighting the L2 regularization of the relu thresholded states. Default: 0.
+                * **L1_in** (*float, optional*) -- Parameter for weighting the L1 input weights regularization. Default: 0.
+                * **L1_rec** (*float, optional*) -- Parameter for weighting the L1 recurrent weights regularization. Default: 0.
+                * **L1_out** (*float, optional*) -- Parameter for weighting the L1 output weights regularization. Default: 0.
+                * **L2_in** (*float, optional*) -- Parameter for weighting the L2 input weights regularization. Default: 0.
+                * **L2_rec** (*float, optional*) -- Parameter for weighting the L2 recurrent weights regularization. Default: 0.
+                * **L2_out** (*float, optional*) -- Parameter for weighting the L2 output weights regularization. Default: 0.
+                * **L2_firing_rate** (*float, optional*) -- Parameter for weighting the L2 regularization of the relu thresholded states. Default: 0.
+                * **custom_regularization** (*function, optional*) -- Custom regularization function. Default: None.
+
+                    Args:
+                        * **model** (:class:`~psychrnn.backend.rnn.RNN` *object*) -- Model for which to calculate the regularization.
+                        * **params** (*dict*) -- Regularization parameters. All params passed to the :class:`Regularizer` will be passed here.
+
+                    Returns:
+                        tf.Tensor(dtype=float)-- The custom regularization to add when calculating the loss.
     """
 
     def __init__(self, params):
@@ -35,6 +43,9 @@ class Regularizer(object):
         self.L2_out = params.get('L2_out', 0)
 
         self.L2_firing_rate = params.get('L2_firing_rate', 0)
+
+        self.custom_regularization =  params.get('custom_regularization', None)
+        self.params = params
 
     def set_model_regularization(self, model):
         """ Given model, calculate the regularization by adding all regualarization terms (scaled with the parameters to be either zero or nonzero).
@@ -63,6 +74,10 @@ class Regularizer(object):
         # L2 firing rate regularization
         # ----------------------------------
         reg += self.L2_firing_rate_reg(model)
+
+
+        if self.custom_regularization is not None:
+            reg += self.custom_regularization(model, self.params)
 
         return reg
 
