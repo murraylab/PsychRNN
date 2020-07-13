@@ -7,13 +7,7 @@ Welcome to PsychRNN's documentation!
 ====================================
 
 
-.. image:: https://api.travis-ci.com/murraylab/PsychRNN.svg?branch=v{release}
-    :target: https://api.travis-ci.com/murraylab/PsychRNN
-    :alt: Build Status
-
-.. image:: https://codecov.io/gh/murraylab/PsychRNN/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/murraylab/PsychRNN
-    :alt: codecov
+[Travis and Codecov badges redacted for double-blind review]
 
 This package is intended to help cognitive scientists easily translate task designs from human or primate behavioral experiments into a form capable of being used as training data for a recurrent neural network.
 
@@ -21,9 +15,9 @@ We have isolated the front-end task design, in which users can intuitively descr
 
 Start with `Hello World <notebooks/Minimal_Example.ipynb>`_ to get a quick sense of what PsychRNN does. Then go through the `Simple Example <notebooks/PerceptualDiscrimination.ipynb>`_ to get a feel for how to customize PsychRNN. The rest of `Getting Started <quickstart.rst>`_ will help guide you through using available features, defining your own task, and even defining your own model.
 
-Release announcments are posted on the `psychrnn mailing list <https://www.freelists.org/list/psychrnn>`_ and on `GitHub <https://github.com/murraylab/PsychRNN>`_.
+Release announcments are posted on the psychrnn mailing list and on GitHub [Links redacted for double-blind review].
 
-Code is written and upkept by: `Daniel B. Ehrlich <https://github.com/dbehrlich>`_, `Jasmine T. Stone <https://github.com/syncrostone/>`_, `David Brandfonbrener <https://github.com/davidbrandfonbrener>`_, and `Alex Atanasov <https://github.com/ABAtanasov>`_.
+Code is written and upkept by: [Authors redacted for double-blind review].
 
 Contact: psychrnn@gmail.com
 

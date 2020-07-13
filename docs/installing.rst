@@ -23,7 +23,7 @@ Normally, you can install with: ::
 
 	pip install psychrnn={release}
 
-Alternatively, you can download and extract the source files from the `GitHub release <https://github.com/murraylab/psychrnn/releases/tag/v{release}>`_. Within the downloaded PsychRNN-v{release} folder, run: ::
+Alternatively, you can download and extract the source files from the GitHub release [URL redacted for double-blind review]. Within the downloaded PsychRNN-v{release} folder, run: ::
 
         python setup.py install
 
@@ -40,7 +40,7 @@ in a new ``conda`` environment:
 
 .. code-block:: bash
 
-        git clone https://github.com/murraylab/PsychRNN.git
+        git clone [URL redacted for double-blind review]
         cd PsychRNN
         python setup.py install
 
@@ -48,7 +48,7 @@ in a new ``conda`` environment:
 Contributing
 ------------
 
-Please report bugs to https://github.com/murraylab/psychrnn/issues.  This
+Please report bugs to [URL redacted for double-blind review].  This
 includes any problems with the documentation.  Fixes (in the form of
 pull requests) for bugs are greatly appreciated.
 

@@ -101,7 +101,6 @@ def test_extra_info_rnn(tf_graph):
 	params = extend_params(params)
 	RNN(params)
 
-#TODO(Jasmine): test load weights after testing save weights in train
 @patch.object(RNN, '__abstractmethods__', set())
 def test_load_weights_path_rnn(tf_graph,mocker,tmpdir, capfd):
 	params = get_params()

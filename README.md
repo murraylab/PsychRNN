@@ -1,27 +1,23 @@
 # PsychRNN
-[![Build Status](https://api.travis-ci.com/murraylab/PsychRNN.svg?branch=master)](https://api.travis-ci.com/murraylab/PsychRNN)
-[![codecov](https://codecov.io/gh/murraylab/PsychRNN/branch/master/graph/badge.svg)](https://codecov.io/gh/murraylab/PsychRNN)
-[![Documentation Status](https://readthedocs.org/projects/psychrnn/badge/?version=latest)](https://psychrnn.readthedocs.io/en/latest/?badge=latest)
-
-**Preprint coming July 2020!**
+[Travis, Codecov, and Documentation badges redacted for double-blind review]
 
 ## Overview
 
-Full documentation is available at [psychrnn.readthedocs.io](https://psychrnn.readthedocs.io/).
+Full documentation is available at [URL redacted for double blind review, redacted documentation included in Extended Data 1 as a pdf].
 
 This package is intended to help cognitive scientists easily translate task designs from human or primate behavioral experiments into a form capable of being used as training data for a recurrent neural network.
 
 We have isolated the front-end task design, in which users can intuitively describe the conditional logic of their task from the backend where gradient descent based optimization occurs. This is intended to facilitate researchers who might otherwise not have an easy implementation available to design and test hypothesis regarding the behavior of recurrent neural networks in different task environements.
 
-Release announcments are posted on the [psychrnn mailing list](https://www.freelists.org/list/psychrnn>) and on [GitHub](https://github.com/murraylab/PsychRNN)
+Release announcments are posted on the psychrnn mailing list and on GitHub [Links redacted for double-blind review].
 
-Code is written and upkept by: [Daniel B. Ehrlich](https://github.com/dbehrlich>), [Jasmine T. Stone](https://github.com/syncrostone/), [David Brandfonbrener](https://github.com/davidbrandfonbrener), and [Alex Atanasov](https://github.com/ABAtanasov).
+Code is written and upkept by: [Authors redacted for double-blind review].
 
 Contact: psychrnn@gmail.com 
 
 ## Getting Started
 
-Start with [Hello World](https://psychrnn.readthedocs.io/en/latest/notebooks/Minimal_Example.html) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/murraylab/PsychRNN/blob/master/docs/notebooks/Minimal_Example.ipynb) to get a quick sense of what PsychRNN does. Then go through the [Simple Example](https://psychrnn.readthedocs.io/en/latest/notebooks/PerceptualDiscrimination.html) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/murraylab/PsychRNN/blob/master/docs/notebooks/PerceptualDiscrimination.ipynb) to get a feel for how to customize PsychRNN. The rest of [Getting Started](https://psychrnn.readthedocs.io/en/quickstart.html) will help guide you through using available features, defining your own task, and even defining your own model.
+Start with [Hello World](./docs/notebooks/Minimal_Example.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)] (URL redacted for double-blind review) to get a quick sense of what PsychRNN does. Then go through the [Simple Example](./docs/notebooks/PerceptualDiscrimination.ipynb) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)] (URL redacted for double-blind review) to get a feel for how to customize PsychRNN. The rest of [Getting Started] (URL redacted for double-blind review, see included pdf of  documentation) will help guide you through using available features, defining your own task, and even defining your own model.
 
 ## Install
 
@@ -45,19 +41,19 @@ Normally, you can install with:
 
 	pip install psychrnn
 
-Alternatively, you can download and extract the source files from the [GitHub release](https://github.com/murraylab/psychrnn/releases/). Within the downloaded PsychRNN folder, run:
+Alternatively, you can download and extract the source files from the [GitHub release] (URL redacted for double-blind review). Within the downloaded PsychRNN folder, run:
 
         python setup.py install
 
 [THIS OPTION IS NOT RECOMMENDED FOR MOST USERS] To get the most recent (not necessarily stable) version from the github repo, clone the repository and install:
 
-        git clone https://github.com/murraylab/PsychRNN.git
+        git clone [URL redacted for double-blind review]
         cd PsychRNN
         python setup.py install
 
 ## Contributing
 
-Please report bugs to https://github.com/murraylab/psychrnn/issues.  This
+Please report bugs to [URL redacted for double-blind review].  This
 includes any problems with the documentation.  Fixes (in the form of
 pull requests) for bugs are greatly appreciated.
 

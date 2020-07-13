@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'PsychRNN'
-copyright = '2020, Daniel B. Ehrlich*, Jasmine T. Stone*, David Brandfonbrener, Alex Atanasov, John D. Murray (* indicates equal contribution)'
-author = 'Daniel B. Ehrlich*, Jasmine T. Stone*, David Brandfonbrener, Alex Atanasov, John D. Murray (* indicates equal contribution)'
+copyright = '2020, Authors redacted for double-blind review'
+author = 'Authors redacted for double-blind review'
 
 exec(open("../psychrnn/_version.py", "r").read()) # get __version__ variable
 
@@ -99,10 +99,8 @@ nbsphinx_prolog = r"""
 .. raw:: html
 
     <div class="admonition note">
-      This page was generated from
-      <a class="reference external" href="https://github.com/murraylab/PsychRNN/blob/v{{ env.config.release|e }}/{{ docname|e }}">{{ docname|e }}</a>.
-      Interactive online version:
-      <a href="https://colab.research.google.com/github/murraylab/PsychRNN/blob/v{{ env.config.release|e }}/{{ docname|e }}"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>.
+      This page was generated from [Link redacted for double-blind review, see docs/notebooks for files].
+      Interactive online version: [Link to Google Colab notebook redacted for double-blind review. To run, upload entire docs/notebooks folder to drive and run in google colab].
       <script>
         if (document.location.host) {
           $(document.currentScript).replaceWith(
