@@ -1,179 +1,81 @@
 # PsychRNN
 [![Build Status](https://api.travis-ci.com/murraylab/PsychRNN.svg?branch=master)](https://api.travis-ci.com/murraylab/PsychRNN)
 [![codecov](https://codecov.io/gh/murraylab/PsychRNN/branch/master/graph/badge.svg)](https://codecov.io/gh/murraylab/PsychRNN)
+[![Documentation Status](https://readthedocs.org/projects/psychrnn/badge/?version=latest)](https://psychrnn.readthedocs.io/en/latest/?badge=latest)
 
-**Updated code, documentation, and preprint coming July 2020!**
+**Preprint coming July 2020!**
 
-This package is intended to help cognitive scientist easily translate task designs from human or primate behavioral experiments into a form capable of being used as training data for a recurrent neural network.
+## Overview
 
+Full documentation is available at [psychrnn.readthedocs.io](https://psychrnn.readthedocs.io/).
+
+This package is intended to help cognitive scientists easily translate task designs from human or primate behavioral experiments into a form capable of being used as training data for a recurrent neural network.
 
 We have isolated the front-end task design, in which users can intuitively describe the conditional logic of their task from the backend where gradient descent based optimization occurs. This is intended to facilitate researchers who might otherwise not have an easy implementation available to design and test hypothesis regarding the behavior of recurrent neural networks in different task environements.
 
+Release announcments are posted on the [psychrnn mailing list](https://www.freelists.org/list/psychrnn>) and on [GitHub](https://github.com/murraylab/PsychRNN)
 
-Code is written and upkept by: @davidbrandfonbrener @dbehrlic @ABAtanasov @syncrostone
+Code is written and upkept by: [Daniel B. Ehrlich](https://github.com/dbehrlich>), [Jasmine T. Stone](https://github.com/syncrostone/), [David Brandfonbrener](https://github.com/davidbrandfonbrener), and [Alex Atanasov](https://github.com/ABAtanasov).
 
 Contact: psychrnn@gmail.com 
 
 ## Getting Started
 
-You can try out PsychRNN without downloading anything using our example notebook that runs in the browser on Google Colab. Try it here: https://colab.research.google.com/github/dbehrlich/PsychRNN/blob/master/psychrnn/notebooks/collaboratory_RDM.ipynb
+Start with [Hello World](https://psychrnn.readthedocs.io/en/latest/notebooks/Minimal_Example.html) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/murraylab/PsychRNN/blob/master/docs/notebooks/Minimal_Example.ipynb) to get a quick sense of what PsychRNN does. Then go through the [Simple Example](https://psychrnn.readthedocs.io/en/latest/notebooks/PerceptualDiscrimination.html) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/murraylab/PsychRNN/blob/master/docs/notebooks/PerceptualDiscrimination.ipynb) to get a feel for how to customize PsychRNN. The rest of [Getting Started](https://psychrnn.readthedocs.io/en/quickstart.html) will help guide you through using available features, defining your own task, and even defining your own model.
 
 ## Install
 
 ### Dependencies
 
-- Numpy
-- Tensorflow
-- Python=2.7 or 3.6
+- python = 2.7 or python >= 3.4
+- [numpy](http://www.numpy.org/)
+- [tensorflow](https://www.tensorflow.org/) >= 1.13.1
 
-For Demos:
-- Jupyter
-- Ipython
-- Matplotlib
+- For notebook demos, [jupyter](https://jupyter.org/)
+- For notebook demos, [ipython](https://ipython.org/)
+- For plotting features, [matplotlib](https://matplotlib.org/)
+
+PsychRNN was developed to work with both Python 2.7 and 3.4+ using TensorFlow 1.13.1+. It is currently being tested on Python 2.7 and 3.4-3.8 with TensorFlow 1.13.1-2.2.
+
+**Note:** TensorFlow 2.2 does not support Python < 3.5. Only TensorFlow 1.13.1-1.14 are compatible with Python 3.4. Python 3.8 is only supported by TensorFlow 2.2.
 
 ### Installation
 
-git clone https://github.com/murraylab/PsychRNN.git  
-cd PsychRNN   
-python setup.py install
+Normally, you can install with:
 
-## 17 Lines Introduction
+	pip install psychrnn
 
-A minimal introduction to our package. In this simple introduction you can generate a new recurrent neural network model, train that model on the random dot motion discrimination task, and plot out an example output in just 17 lines.
+Alternatively, you can download and extract the source files from the [GitHub release](https://github.com/murraylab/psychrnn/releases/). Within the downloaded PsychRNN folder, run:
 
-	import psychrnn  
-	from psychrnn.tasks import rdm as rd  
-	from psychrnn.backend.models.basic import Basic  
-	import tensorflow as tf  
+        python setup.py install
 
-	from matplotlib import pyplot as plt  
-	%matplotlib inline
+[THIS OPTION IS NOT RECOMMENDED FOR MOST USERS] To get the most recent (not necessarily stable) version from the github repo, clone the repository and install:
 
-	rdm = rd.RDM(dt = 10, tau = 100, T = 2000, N_batch = 128)  
-	gen = rdm.batch_generator()
+        git clone https://github.com/murraylab/PsychRNN.git
+        cd PsychRNN
+        python setup.py install
 
-	params = rdm.__dict__  
-	params['name'] = 'model'  
-	params['N_rec'] = 50  
+## Contributing
 
-	model = Basic(params)  
-	model.build()  
-	model.train(gen)
+Please report bugs to https://github.com/murraylab/psychrnn/issues.  This
+includes any problems with the documentation.  Fixes (in the form of
+pull requests) for bugs are greatly appreciated.
 
-	x,_,_,_ = next(gen)
+Feature requests are welcome but may or may not be accepted due to limited
+resources. If you implement the feature yourself we are open
+to accepting it in PsychRNN.  If you implement a new feature in PsychRNN,
+please do the following before submitting a pull request on GitHub:
 
-	plt.plot(model.test(x)[0][0,:,:])
+- Make sure your code is clean and well commented
+- If appropriate, update the official documentation in the ``docs/``
+  directory
+- Write unit tests and optionally integration tests for your new
+  feature in the ``tests/`` folder.
+- Ensure all existing tests pass (``pytest`` returns without
+  error)
 
-	model.destruct()
+For all other questions or comments, contact psychrnn@gmail.com.
 
-Code for this example can be found in "Minimal_Example.ipynb"
+## License
 
-## Demonstration Notebook
-
-For a more complete tour of training and model parameters see the "RDM.ipynb" notebook.
-
-
-## Writing a New Task
-
-You can easily begin running your own tasks by writing a new task subclass with the two functions (generate_trial_params, trial_function) specified below, or by modifying one of our existing task files such as "rdm.py" or "romo.py".
-
-	Class your_new_class(Task):
-
-		def __init__(self, N_in, N_out, dt, tau, T, N_batch):
-
-			super(RDM,self).__init__(N_in, N_out, dt, tau, T, N_batch)
-
-				'''
-
-				Args:
-					N_in: number of network inputs
-					N_out: number of network output
-					dt: simulation time step
-					tau: unit time constant
-					T: trial length
-					N_batch: number of trials per training update
-
-				'''
-
-		def generate_trial_params(self,batch,trial):
-
-			''' function that produces trial specific params for your task (e.g. coherence for the 
-				random dot motion discrimination task)
-
-			Args:
-				batch: # of batch for training (for internal use)
-				trial: # of trial within a batch (for internal use)
-
-			Returns:
-				params: A dictionary of necessary params for trial_function
-
-				'''
-
-		def trial_function(self,t,params):
-
-			'''function that specifies conditional network input, target output and loss mask for your task at a given time (e.g. if t>stim_onset x_t=1).
-
-			Args:
-				t: time
-				params: params dictionary from generate_trial_params
-
-			Returns:
-				x_t: input vector of length N_in at time t
-				y_t: target output vector of length N_out at time t
-				mask_t: loss function mask vector of length N_out at time t
-
-				'''
-
-## Building a New Model
-
-
-New models can be added by extending the RNN superclass, as in our examples of "basic.py" and "lstm.py". Each new model class requires three functions (recurrent_timestep, output time_step and forward_pass).
-
-	Class your_new_model(RNN):
-
-		def recurrent_timestep(self, rnn_in, state):
-
-			'''function that updates the recurrent state of your network one timestep
-
-			Args:
-				rnn_in: network input vector of length N_in at t
-				state: network state at t
-
-			Returns:
-				new_state: network state at t+1
-
-				'''
-
-		def output_timestep(self, state):
-
-			'''function that produces output for the current state of your network at one timestep
-
-			Args:
-				state: network state at t
-
-			Returns:
-				output: output vector of length N_out at t
-
-				'''
-
-		def forward_pass(self):
-
-			'''function that contains the loop of calls to recurrent_timestep and output_timestep
-			to run the evolution of your state through a trial 
-
-
-				'''
-
-
-## Further Extensibility
-
-If you wish to modify weight initializations, loss functions or regularizations it is as simple as adding an additional class to "initializations.py" describing your preferred initial weight patterns or a single function to "loss_functions.py" or "regularizations.py".
-
-### Backend
-
-- initializations
-- loss_functions
-- regularizations
-- rnn
-- simulation
-
+All code is available under the MIT license. See LICENSE for more information.
