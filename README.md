@@ -3,7 +3,7 @@
 
 ## Overview
 
-Full documentation is available at [URL redacted for double blind review, redacted documentation included in Extended Data 1 as a pdf].
+Full documentation is available at [URL redacted for double blind review, redacted documentation included in Extended Data 1 as a pdf, available as html starting at ./docs/_build/html/index.html].
 
 This package is intended to help cognitive scientists easily translate task designs from human or primate behavioral experiments into a form capable of being used as training data for a recurrent neural network.
 
