@@ -5,7 +5,7 @@
 
 **Preprint:**
 
-Ehrlich DB<sup>\*</sup>, Stone JT<sup>\*</sup>, Brandfonbrener D, Atanasov A, Murray JD (2020) PsychRNN: An Accessible and Flexible Python Package for Training Recurrent Neural Network Models on Cognitive Tasks. bioRxiv 10.1101/2020.09.30.321752. [DOI](https://doi.org/10.1101/2020.09.30.321752)
+Ehrlich DB<sup>\*</sup>, Stone JT<sup>\*</sup>, Brandfonbrener D, Atanasov A, Murray JD (2020) PsychRNN: An Accessible and Flexible Python Package for Training Recurrent Neural Network Models on Cognitive Tasks. *bioRxiv* 10.1101/2020.09.30.321752. [\[DOI\]](https://doi.org/10.1101/2020.09.30.321752)
 
 ## Overview
 
