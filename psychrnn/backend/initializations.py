@@ -62,8 +62,12 @@ class WeightInitializer(object):
             # Load saved weights
             # ----------------------------------
             self.initializations = dict(np.load(self.load_weights_path, allow_pickle = True))
-            if type(self.initializations['dale_ratio']) == np.ndarray:
-                self.initializations['dale_ratio'] = self.initializations['dale_ratio'].item()
+            if 'dale_ratio' in self.initializations.keys():
+                if type(self.initializations['dale_ratio']) == np.ndarray:
+                    self.initializations['dale_ratio'] = self.initializations['dale_ratio'].item()
+            else:
+                warn("You are loading weights from a model trained with an old version (<1.0). Dale's formatting has changed. Dale's rule will not be applied even if the model was previously trained using Dale's. To change this behavior, add the correct dale ratio to the 'dale_ratio' field to the file that weights are being loaded from, " + self.load_weights_path + ".")
+                self.initializations['dale_ratio']  = None;
 
         else:
             if kwargs.get('W_rec', None) is None and type(self).__name__=='WeightInitializer':

@@ -35,3 +35,4 @@ Contact: psychrnn@gmail.com
    installing
    apidoc/index
    quickstart
+   reference
