@@ -329,7 +329,7 @@ class RNN(ABC):
 
         W_out = self.W_out * self.output_connectivity
         if self.dale_ratio:
-            W_out = tf.matmul(tf.abs(self.W_out), self.Dale_out, name="in_2")
+            W_out = tf.matmul(tf.abs(W_out), self.Dale_out, name="in_2")
         return W_out
     
     @abstractmethod
