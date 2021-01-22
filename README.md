@@ -5,7 +5,7 @@
 
 **Paper:**
 
-Ehrlich, D. B.<sup>\*</sup>, Stone, J. T.<sup>\*</sup>, Brandfonbrener, D., Atanasov, A., & Murray, J. D. (2021). PsychRNN: An Accessible and Flexible Python Package for Training Recurrent Neural Network Models on Cognitive Tasks. ENeuro, 8(1). [\[DOI\]](https://doi.org/10.1523/ENEURO.0427-20.2020)
+Ehrlich, D. B.<sup>\*</sup>, Stone, J. T.<sup>\*</sup>, Brandfonbrener, D., Atanasov, A., & Murray, J. D. (2021). PsychRNN: An Accessible and Flexible Python Package for Training Recurrent Neural Network Models on Cognitive Tasks. *ENeuro, 8*(1). [\[DOI\]](https://doi.org/10.1523/ENEURO.0427-20.2020)
 
 ## Overview
 
