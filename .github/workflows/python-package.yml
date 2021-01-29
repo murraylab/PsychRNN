@@ -61,7 +61,7 @@ jobs:
         pip install pytest_cov
         pip install codecov 
         pip install numpy
-        pip install tensorflow==$TF
+        pip install tensorflow==${{ matrix.TF }}
         export PYTHONPATH=$PYTHONPATH:$(pwd)
         python setup.py install
     - name: Install dependencies from setup.py
