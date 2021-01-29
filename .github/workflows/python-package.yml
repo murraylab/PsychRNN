@@ -26,6 +26,12 @@ jobs:
         exclude:
         - python-version: 2.7
           TF: None
+        - python-version: 3.4
+          TF: None
+        - python-version: 3.5
+          TF: None
+        - python-version: 3.6
+          TF: None
         - python-version: 2.7
           TF: 2.2
         - python-version: 3.4
