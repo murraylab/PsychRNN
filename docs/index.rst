@@ -7,8 +7,8 @@ Welcome to PsychRNN's documentation!
 ====================================
 
 
-.. image:: https://api.travis-ci.com/murraylab/PsychRNN.svg?branch=v{release}
-    :target: https://api.travis-ci.com/murraylab/PsychRNN
+.. image:: https://github.com/murraylab/PsychRNN/workflows/tests/badge.svg?branch=v{release}
+    :target: https://github.com/murraylab/PsychRNN/actions?query=workflow%3Atests
     :alt: Build Status
 
 .. image:: https://codecov.io/gh/murraylab/PsychRNN/branch/master/graph/badge.svg
