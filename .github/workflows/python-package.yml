@@ -80,11 +80,10 @@ jobs:
         pip install -U setuptools
         pip install pytest_mock
         pip install pytest_cov
-        pip install codecov 
+        # pip install codecov 
         python setup.py install
     - name: Test with pytest
       run: |
         pytest --cov-report=xml --cov=psychrnn/
-    - name: Codecov
-      run: |
-        codecov
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
