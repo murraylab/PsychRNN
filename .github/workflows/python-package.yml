@@ -1,14 +1,14 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Test PsychRNN
+name: tests
 
 on:
-  push:
-    paths-ignore:
-      - 'LICENSE'
-      - 'README.md'
-      - 'docs/**'
+#   push:
+#     paths-ignore:
+#       - 'LICENSE'
+#       - 'README.md'
+#       - 'docs/**'
   pull_request:
     paths-ignore:
       - 'LICENSE'
@@ -24,6 +24,8 @@ jobs:
         python-version: [2.7, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9]
         TF: [None, 1.13.1, 1.14, 1.15, 2.0, 2.1, 2.2]
         exclude:
+        - python-version: 2.7
+          TF: None
         - python-version: 2.7
           TF: 2.2
         - python-version: 3.4
