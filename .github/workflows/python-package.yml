@@ -80,7 +80,6 @@ jobs:
         pip install -U setuptools
         pip install pytest_mock
         pip install pytest_cov
-        # pip install codecov 
         python setup.py install
     - name: Test with pytest
       run: |
