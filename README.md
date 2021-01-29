@@ -1,5 +1,5 @@
 # PsychRNN
-[![Build Status](https://api.travis-ci.com/murraylab/PsychRNN.svg?branch=master)](https://api.travis-ci.com/murraylab/PsychRNN)
+[![tests](https://github.com/murraylab/PsychRNN/workflows/tests/badge.svg)](https://github.com/murraylab/PsychRNN/actions?query=workflow%3Atests)
 [![codecov](https://codecov.io/gh/murraylab/PsychRNN/branch/master/graph/badge.svg)](https://codecov.io/gh/murraylab/PsychRNN)
 [![Documentation Status](https://readthedocs.org/projects/psychrnn/badge/?version=latest)](https://psychrnn.readthedocs.io/en/latest/?badge=latest)
 

@@ -1,0 +1,86 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: tests
+
+on:
+#   push:
+#     paths-ignore:
+#       - 'LICENSE'
+#       - 'README.md'
+#       - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - 'LICENSE'
+      - 'README.md'
+      - 'docs/**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [2.7, 3.4, 3.5, 3.6, 3.7, 3.8]
+        TF: [None, 1.13.1, 1.14, 1.15, 2.0, 2.1, 2.2]
+        exclude:
+        - python-version: 2.7
+          TF: None
+        - python-version: 3.4
+          TF: None
+        - python-version: 3.5
+          TF: None
+        - python-version: 3.6
+          TF: None
+        - python-version: 2.7
+          TF: 2.2
+        - python-version: 3.4
+          TF: 1.15
+        - python-version: 3.4
+          TF: 2.0 
+        - python-version: 3.4
+          TF: 2.1
+        - python-version: 3.4
+          TF: 2.2
+        - python-version: 3.8
+          TF: 1.13.1
+        - python-version: 3.8
+          TF: 1.14
+        - python-version: 3.8
+          TF: 1.15
+        - python-version: 3.8
+          TF: 2.0
+        - python-version: 3.8
+          TF: 2.1
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install test dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install pytest
+        pip install -U setuptools
+        pip install pytest_mock
+        pip install pytest_cov
+        pip install codecov 
+    - name: Install package dependencies with TF ${{ matrix.TF }}
+      if: ${{ matrix.TF != 'None' }}
+      run: |
+        pip install numpy
+        pip install tensorflow==${{ matrix.TF }}
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        python setup.py install
+    - name: Install package dependencies from setup.py
+      if: ${{ matrix.TF == 'None' }}
+      run: |
+        python setup.py install
+    - name: Test with pytest
+      run: |
+        pytest --cov-report=xml --cov=psychrnn/
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      if: matrix.python-version == '3.8' && matrix.TF == '2.2'
