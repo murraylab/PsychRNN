@@ -52,7 +52,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies with specied TF version
-      if: TF!="None"
+      if: maxrix.TF!="None"
       run: |
         python -m pip install --upgrade pip
         python -m pip install pytest
@@ -65,7 +65,7 @@ jobs:
         export PYTHONPATH=$PYTHONPATH:$(pwd)
         python setup.py install
     - name: Install dependencies from setup.py
-      if: TF=="None"
+      if: matrix.TF=="None"
       run: |
         python -m pip install --upgrade pip
         python -m pip install pytest
