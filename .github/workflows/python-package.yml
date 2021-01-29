@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [2.7, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9]
+        python-version: [2.7, 3.4, 3.5, 3.6, 3.7, 3.8]
         TF: [None, 1.13.1, 1.14, 1.15, 2.0, 2.1, 2.2]
         exclude:
         - python-version: 2.7
@@ -51,7 +51,7 @@ jobs:
         - python-version: 3.8
           TF: 2.0
         - python-version: 3.8
-          TF: 2.1  
+          TF: 2.1
 
     steps:
     - uses: actions/checkout@v2
