@@ -4,11 +4,11 @@
 name: tests
 
 on:
-#   push:
-#     paths-ignore:
-#       - 'LICENSE'
-#       - 'README.md'
-#       - 'docs/**'
+  push:
+    paths-ignore:
+      - 'LICENSE'
+      - 'README.md'
+      - 'docs/**'
   pull_request:
     paths-ignore:
       - 'LICENSE'
