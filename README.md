@@ -15,7 +15,7 @@ This package is intended to help cognitive scientists easily translate task desi
 
 We have isolated the front-end task design, in which users can intuitively describe the conditional logic of their task from the backend where gradient descent based optimization occurs. This is intended to facilitate researchers who might otherwise not have an easy implementation available to design and test hypothesis regarding the behavior of recurrent neural networks in different task environements.
 
-Release announcments are posted on the [psychrnn mailing list](https://www.freelists.org/list/psychrnn>) and on [GitHub](https://github.com/murraylab/PsychRNN)
+Release announcments are posted on the [psychrnn mailing list](https://www.freelists.org/list/psychrnn) and on [GitHub](https://github.com/murraylab/PsychRNN)
 
 Code is written and upkept by: [Daniel B. Ehrlich](https://github.com/dbehrlich>), [Jasmine T. Stone](https://github.com/syncrostone/), [David Brandfonbrener](https://github.com/davidbrandfonbrener), and [Alex Atanasov](https://github.com/ABAtanasov).
 
