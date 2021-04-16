@@ -117,7 +117,7 @@ class WeightInitializer(object):
                 dale_out = np.diag(dale_vec)
             self.initializations['Dale_rec'] = kwargs.get('Dale_rec', dale_rec)
             assert(self.initializations['Dale_rec'].shape == (N_rec, N_rec))
-            self.initializations['Dale_out'] = kwargs.get('Dale_out', dale_rec)
+            self.initializations['Dale_out'] = kwargs.get('Dale_out', dale_out)
             assert(self.initializations['Dale_out'].shape == (N_rec, N_rec))
 
             # ----------------------------------
