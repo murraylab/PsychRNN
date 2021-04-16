@@ -26,6 +26,6 @@ setup(
     'Mailing List': 'https://www.freelists.org/list/psychrnn',
     },
 
-    install_requires=['python_version>="2.7",!="3.0*",!="3.1*",!="3.2*",!="3.3*"', 'tensorflow']
+    install_requires=['python_version>="2.7",!="3.0*",!="3.1*",!="3.2*",!="3.3*"', 'tensorflow >= 1.13.1', 'numpy']
 
 )
