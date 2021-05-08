@@ -500,7 +500,7 @@ class RNN(ABC):
         # --------------------------------------------------
         if training_weights_path != None:
             if path.dirname(training_weights_path) != "" and not path.exists(path.dirname(training_weights_path)):
-                makedirs(path.dirname(_weights_path))
+                makedirs(path.dirname(training_weights_path))
 
         # --------------------------------------------------
         # Compute gradients
