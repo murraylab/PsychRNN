@@ -1,5 +1,6 @@
 import pytest
 import tensorflow as tf
+from math import ceil
 from psychrnn.backend.rnn import RNN
 from psychrnn.backend.initializations import GaussianSpectralRadius
 from psychrnn.tasks.perceptual_discrimination import PerceptualDiscrimination
@@ -231,6 +232,31 @@ def test_train(tf_graph, mocker, capfd):
 	assert rnn.is_built is True
 	out, _ = capfd.readouterr()
 	assert out != ""
+
+@patch.object(RNN, '__abstractmethods__', set())
+def test_train_iters(tf_graph, mocker, capfd):
+	params = get_params()
+
+	pd1 = PerceptualDiscrimination(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = pd1.batch_generator()
+
+	for remainder in [0, 1]:
+		train_params = {}
+		train_params['training_iters'] = params['N_batch'] + remainder # number of iterations to train for Default: 10000
+		train_params['loss_epoch'] = 1 # Compute and record loss every 'loss_epoch' epochs. Default: 10
+		train_params['verbosity'] = True
+
+		rnn = RNN(params)
+		mocker.patch.object(RNN, 'forward_pass')
+		RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
+		
+		rnn.train(gen1, train_params)
+		rnn.destruct()
+
+		out, _ = capfd.readouterr()
+		N_epochs = ceil(train_params['training_iters'] / params['N_batch'])
+		assert "Iter " + str(N_epochs * params['N_batch']) in out
+		assert "Iter " + str((N_epochs+1) * params['N_batch']) not in out
 
 @patch.object(RNN, '__abstractmethods__', set())
 def test_train_train_params_file_creation(tf_graph, mocker, tmpdir, capfd):
