@@ -254,7 +254,7 @@ def test_train_iters(tf_graph, mocker, capfd):
 		rnn.destruct()
 
 		out, _ = capfd.readouterr()
-		N_epochs = ceil(train_params['training_iters'] / params['N_batch'])
+		N_epochs = int(ceil(train_params['training_iters'] / (params['N_batch'] * 1.0)))
 		assert "Iter " + str(N_epochs * params['N_batch']) in out
 		assert "Iter " + str((N_epochs+1) * params['N_batch']) not in out
 
