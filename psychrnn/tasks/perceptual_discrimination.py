@@ -112,7 +112,7 @@ class PerceptualDiscrimination(Task):
             x_t[dir] += 1 + coh
             x_t[(dir + 1) % 2] += 1
 
-        if t > onset + stim_dur + 20:
+        if t >= onset + stim_dur:
             y_t[dir] = self.hi
             y_t[1-dir] = self.lo
 
