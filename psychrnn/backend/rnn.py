@@ -40,7 +40,6 @@ class RNN(ABC):
             * **tau** (*float*) -- The intrinsic time constant of neural state decay.
             * **N_batch** (*int*) -- The number of trials per training update.
             * **rec_noise** (*float, optional*) -- How much recurrent noise to add each time the new state of the network is calculated. Default: 0.0.
-            * **transfer_function** (*function, optional*) -- Transfer function to use for the network. Default: `tf.nn.relu <https://www.tensorflow.org/api_docs/python/tf/nn/relu>`_.
             * **load_weights_path** (*str, optional*) -- When given a path, loads weights from file in that path. Default: None
             * **initializer** (:class:`~psychrnn.backend.initializations.WeightInitializer` *or child object, optional*) -- Initializer to use for the network. Default: :class:`~psychrnn.backend.initializations.WeightInitializer` (:data:`params`) if :data:`params` includes :data:`W_rec` or :data:`load_weights_path` as a key, :class:`~psychrnn.backend.initializations.GaussianSpectralRadius` (:data:`params`) otherwise.
             * **W_in_train** (*bool, optional*) -- True if input weights, W_in, are trainable. Default: True
@@ -65,6 +64,7 @@ class RNN(ABC):
                 * **output_connectivity** (*ndarray(dtype=float, shape=(* :attr:`N_out`, :attr:`N_rec` *)), optional*) -- Connectivity mask for the output layer. 1 where connected, 0 where unconnected. Default: np.ones((:attr:`N_out`, :attr:`N_rec`)).
                 * **autapses** (*bool, optional*) -- If False, self connections are not allowed in N_rec, and diagonal of :data:`rec_connectivity` will be set to 0. Default: True.
                 * **dale_ratio** (float, optional) -- Dale's ratio, used to construct Dale_rec and Dale_out. 0 <= dale_ratio <=1 if dale_ratio should be used. ``dale_ratio * N_rec`` recurrent units will be excitatory, the rest will be inhibitory. Default: None
+                * **transfer_function** (*function, optional*) -- Transfer function to use for the network. Default: `tf.nn.relu <https://www.tensorflow.org/api_docs/python/tf/nn/relu>`_.
         
         Inferred Parameters:
             * **alpha** (*float*) -- The number of unit time constants per simulation timestep.
@@ -133,7 +133,6 @@ class RNN(ABC):
             
         self.alpha = (1.0 * self.dt) / self.tau
         self.rec_noise = params.get('rec_noise', 0.0)
-        self.transfer_function = params.get('transfer_function', tf.nn.relu)
 
 
         # ----------------------------------
@@ -154,6 +153,7 @@ class RNN(ABC):
                                           GaussianSpectralRadius(**params))
 
         self.dale_ratio = self.initializer.get_dale_ratio()
+        self.transfer_function = self.initializer.get_transfer_function()
 
         # ----------------------------------
         # Trainable features
@@ -368,6 +368,7 @@ class RNN(ABC):
                 * **rec_connectivity** (*ndarray(dtype=float, shape=(:attr:`N_rec`, :attr:`N_rec`*))*) -- Connectivity mask for the recurrent layer. 1 where connected, 0 where unconnected.
                 * **output_connectivity** (*ndarray(dtype=float, shape=(:attr:`N_out`, :attr:`N_rec`*))*) -- Connectivity mask for the output layer. 1 where connected, 0 where unconnected.
                 * **dale_ratio** (*float*) -- Dale's ratio, used to construct Dale_rec and Dale_out. Either ``None`` if dale's law was not applied, or 0 <= dale_ratio <=1 if dale_ratio was applied.
+                * **transfer_function** (*function*) -- Transfer function to use for the network.
 
             Note:
                 Keys returned may be different / include other keys depending on the implementation of :class:`RNN` used. A different set of keys will be included e.g. if the :class:`~psychrnn.backend.models.lstm.LSTM` implementation is used. The set of keys above is accurate and meaningful for the :class:`~psychrnn.backend.models.basic.Basic` and :class:`~psychrnn.backend.models.basic.BasicScan` implementations.
@@ -390,6 +391,7 @@ class RNN(ABC):
         weights_dict.update({'W_in': self.get_effective_W_in().eval(session=self.sess)})
         weights_dict.update({'W_out': self.get_effective_W_out().eval(session=self.sess)})
         weights_dict['dale_ratio'] = self.dale_ratio
+        weights_dict['transfer_function'] = self.transfer_function
         return weights_dict
 
     def save(self, save_path):

@@ -146,6 +146,42 @@ def test_load_weights_path_rnn(tf_graph,mocker,tmpdir, capfd):
 	
 
 @patch.object(RNN, '__abstractmethods__', set())
+def test_load_weights_custom_transfer_function_rnn(tf_graph,mocker,tmpdir, capfd):
+	params = get_params()
+	params['transfer_function'] = tf.nn.tanh
+
+	pd1 = PerceptualDiscrimination(dt = params['dt'], tau = params['tau'], T = 2000, N_batch = params['N_batch'])  
+	gen1 = pd1.batch_generator()
+
+	mocker.patch.object(RNN, 'forward_pass')
+	RNN.forward_pass.return_value = tf.fill([params['N_batch'], params['N_steps'], params['N_out']], float('nan')), tf.fill([params['N_batch'], params['N_steps'], params['N_rec']], float('nan'))
+	
+	rnn =RNN(params)
+	rnn.build()
+
+	train_params = {}
+	train_params['save_weights_path'] =  str(tmpdir.dirpath("save_weights.npz")) # Where to save the model after training. Default: None
+	train_params['verbosity'] = False
+
+	### save out some weights to test with and destroy the rnn that created them
+	assert not tmpdir.dirpath("save_weights.npz").check(exists=1)
+	rnn.train(gen1, train_params)
+
+	assert rnn.is_initialized is True
+	out, _ = capfd.readouterr()
+	print(out)
+	assert out==""
+	assert tmpdir.dirpath("save_weights.npz").check(exists=1)
+	rnn.destruct()
+
+	### Ensure success when loading weights created previously
+	params['load_weights_path'] = str(tmpdir.dirpath("save_weights.npz"))
+	rnn = RNN(params)
+	assert (rnn.transfer_function == tf.nn.tanh)
+
+	tmpdir.dirpath("save_weights.npz").remove()
+
+@patch.object(RNN, '__abstractmethods__', set())
 def test_initializer_rnn(tf_graph):
 	params = get_params()
 	params = extend_params(params)

@@ -39,7 +39,7 @@ class WeightInitializer(object):
         init_state (ndarray(dtype=float, shape=(1, :attr:`N_rec` )), optional): Initial state of the network's recurrent units. Default: .1 + .01 * np.random.randn(:data:`N_rec` ).
 
     Attributes:
-        initializations (dict): Dictionary containing entries for :data:`input_connectivity`, :data:`rec_connectivity`, :data:`output_connectivity`, :data:`dale_ratio`, :data:`Dale_rec`, :data:`Dale_out`, :data:`W_in`, :data:`W_rec`, :data:`W_out`, :data:`b_rec`, :data:`b_out`, and :data:`init_state`.
+        initializations (dict): Dictionary containing entries for :data:`input_connectivity`, :data:`rec_connectivity`, :data:`output_connectivity`,:data:`transfer_function`, :data:`dale_ratio`, :data:`Dale_rec`, :data:`Dale_out`, :data:`W_in`, :data:`W_rec`, :data:`W_out`, :data:`b_rec`, :data:`b_out`, and :data:`init_state`.
     
     """
 
@@ -68,6 +68,12 @@ class WeightInitializer(object):
             else:
                 warn("You are loading weights from a model trained with an old version (<1.0). Dale's formatting has changed. Dale's rule will not be applied even if the model was previously trained using Dale's. To change this behavior, add the correct dale ratio to the 'dale_ratio' field to the file that weights are being loaded from, " + self.load_weights_path + ".")
                 self.initializations['dale_ratio']  = None;
+
+            if 'transfer_function' in self.initializations.keys():
+                self.initializations['transfer_function'] = self.initializations['transfer_function'].item()
+            else:
+                warn("You are loading weights from a model trained with an old version (<=1.0). Transfer function formatting has changed--if your model was previously trained with a custom transfer function, with your old format you need to pass in the `transfer_function` paramter to ensure the same model behavior as when trained. To automatically use the correct transfer function, add the correct transfer function under the key 'transfer_function' to the file that weights are being loaded from, " + self.load_weights_path + ".")
+                self.initializations['transfer_function']  = kwargs.get('transfer_function', tf.nn.relu);
 
         else:
             if kwargs.get('W_rec', None) is None and type(self).__name__=='WeightInitializer':
@@ -123,6 +129,8 @@ class WeightInitializer(object):
             # ----------------------------------
             # Default initializations / optional loading from params
             # ----------------------------------
+
+            self.initializations['transfer_function'] = kwargs.get('transfer_function', tf.nn.relu)
 
             self.initializations['W_in'] = kwargs.get('W_in', self.rand_init(self.initializations['input_connectivity']))
             assert(self.initializations['W_in'].shape == (N_rec, N_in))
@@ -237,6 +245,15 @@ class WeightInitializer(object):
         """
 
         return self.initializations['dale_ratio']
+
+    def get_transfer_function(self):
+        """ Returns the transfer function.
+
+        Returns:
+            function: transfer function, Default: `tf.nn.relu <https://www.tensorflow.org/api_docs/python/tf/nn/relu>`_.
+        """
+
+        return self.initializations['transfer_function']
 
     def get(self, tensor_name):
         """ Get :data:`tensor_name` from :attr:`initializations` as a Tensor.
