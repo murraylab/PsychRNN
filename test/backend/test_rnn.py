@@ -175,6 +175,7 @@ def test_load_weights_custom_transfer_function_rnn(tf_graph,mocker,tmpdir, capfd
 	rnn.destruct()
 
 	### Ensure success when loading weights created previously
+	del params['transfer_function']
 	params['load_weights_path'] = str(tmpdir.dirpath("save_weights.npz"))
 	rnn = RNN(params)
 	assert (rnn.transfer_function == tf.nn.tanh)
