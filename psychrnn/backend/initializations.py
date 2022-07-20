@@ -73,7 +73,7 @@ class WeightInitializer(object):
                 self.initializations['transfer_function'] = self.initializations['transfer_function'].item()
             else:
                 warn("You are loading weights from a model trained with an old version (<=1.0). Transfer function formatting has changed--if your model was previously trained with a custom transfer function, with your old format you need to pass in the `transfer_function` paramter to ensure the same model behavior as when trained. To automatically use the correct transfer function, add the correct transfer function under the key 'transfer_function' to the file that weights are being loaded from, " + self.load_weights_path + ".")
-                self.initializations['transfer_function']  = kwargs.get('transfer_function', tf.nn.relu);
+                self.initializations['transfer_function']  = kwargs.get('transfer_function');
 
         else:
             if kwargs.get('W_rec', None) is None and type(self).__name__=='WeightInitializer':

@@ -144,7 +144,8 @@ class RNN(ABC):
         # Define initializer for TensorFlow variables
         # ------------------------------------------------
         if self.load_weights_path is not None:
-            self.initializer = WeightInitializer(load_weights_path=self.load_weights_path)
+            # transfer function is passed in here only for backwards compatibility -- if you load weights saved before transfer_function was added to saved weights, the model will use the custom transfer function passed in.
+            self.initializer = WeightInitializer(load_weights_path=self.load_weights_path, transfer_function=params.get('transfer_function', tf.nn.relu))
         elif params.get('W_rec', None) is not None:
             self.initializer = params.get('initializer',
                                           WeightInitializer(**params))
