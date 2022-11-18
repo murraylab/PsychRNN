@@ -486,7 +486,7 @@ class RNN(ABC):
                 raise UserWarning("training will not be cutoff based on performance. Make sure both performance_measure and performance_cutoff are defined")
 
         if curriculum is not None:
-            trial_batch_generator = curriculum.get_generator_function()
+            trial_batch_generator = curriculum.batch_generator()
 
         if not isgenerator(trial_batch_generator):
             trial_batch_generator = trial_batch_generator.batch_generator()
@@ -574,7 +574,7 @@ class RNN(ABC):
                 if curriculum.metric_test(trial_batch, trial_y, output_mask, output, epoch, losses, verbosity):
                     if curriculum.stop_training:
                         break
-                    trial_batch_generator = curriculum.get_generator_function()
+                    trial_batch_generator = curriculum.batch_generator()
 
             # --------------------------------------------------
             # Save intermediary weights
