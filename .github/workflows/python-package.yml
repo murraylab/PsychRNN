@@ -22,16 +22,18 @@ jobs:
     strategy:
       matrix:
         python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
-        TF: [None, 1.13.1, 1.14, 1.15, 2.0, 2.1, 2.2]
+        TF: [1.13.1, 1.14, 1.15, 2.0, 2.1, 2.2, 2.*]
         exclude:
         - python-version: 2.7
-          TF: None
+          TF: 2.*
         - python-version: 3.5
-          TF: None
+          TF: 2.*
         - python-version: 3.6
-          TF: None
+          TF: 2.*
         - python-version: 2.7
           TF: 2.2
+        - python-version: 3.7
+          TF: 2.0
         - python-version: 3.8
           TF: 1.13.1
         - python-version: 3.8
@@ -58,14 +60,10 @@ jobs:
         pip install pytest_cov
         pip install codecov 
     - name: Install package dependencies with TF ${{ matrix.TF }}
-      if: ${{ matrix.TF != 'None' }}
       run: |
-        pip install numpy
-        pip install tensorflow==${{ matrix.TF }}
+        pip install numpy tensorflow==${{ matrix.TF }} 'protobuf<=3.20'
         export PYTHONPATH=$PYTHONPATH:$(pwd)
-        python setup.py install
-    - name: Install package dependencies from setup.py
-      if: ${{ matrix.TF == 'None' }}
+    - name: Install this package
       run: |
         python setup.py install
     - name: Test with pytest
