@@ -52,6 +52,9 @@ class Task(ABC):
         self.alpha = (1.0 * self.dt) / self.tau
         self.N_steps = int(np.ceil(self.T / self.dt))
 
+        # Initialize a generator
+        self._batch_generator = self.batch_generator()
+
     def get_task_params(self):
         """ Get dictionary of task parameters.
 
@@ -225,7 +228,7 @@ class Task(ABC):
     def get_trial_batch(self):
         """Get a batch of trials.
 
-        Wrapper for :code:`next(self.batch_generator())`.
+        Wrapper for :code:`next(self._batch_generator)`.
 
         Returns:
             tuple:
@@ -236,5 +239,5 @@ class Task(ABC):
             * **trial_params** (*ndarray(dtype=dict, shape =(*:attr:`N_batch` *,))*): Array of dictionaries containing the trial parameters produced by :func:`generate_trial_params` for each trial in :attr:`N_batch`.
 
         """
-        return next(self.batch_generator())
+        return next(self._batch_generator)
 
