@@ -145,8 +145,14 @@ class Curriculum(object):
 			return True
 		return False
 
+	def get_generator_function(self):
+		""" Depcreated method to return a generator for the current task. Use :func:`batch_generator` instead. """
+
+		print("WARNING: Curriculum.get_generator_function is deprecated. Use Curriculum.batch_generator instead.")
+		return self.batch_generator()
+
 	def batch_generator(self):
-		""" Generates a batch of trials of the current task.
+		""" Returns a generator for the current task.
 
         Returns:
             Generator[tuple, None, None]: generator iterator for the current task

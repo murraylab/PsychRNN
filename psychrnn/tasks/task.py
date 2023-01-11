@@ -52,7 +52,7 @@ class Task(ABC):
         self.alpha = (1.0 * self.dt) / self.tau
         self.N_steps = int(np.ceil(self.T / self.dt))
 
-        # Initialize a generator
+        # Initialize the generator used by get_trial_batch
         self._batch_generator = self.batch_generator()
 
     def get_task_params(self):
@@ -185,7 +185,7 @@ class Task(ABC):
         return x_data, y_data, mask
 
     def batch_generator(self):
-        """ Generates a batch of trials.
+        """ Returns a generator for this task.
 
         Returns:
             Generator[tuple, None, None]:
