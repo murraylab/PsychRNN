@@ -4,6 +4,8 @@ from __future__ import print_function
 from os import makedirs, path
 import numpy as np
 
+import warnings
+
 def default_metric(curriculum_params, input_data, correct_output, output_mask, output, epoch, losses, verbosity):
 	""" Default metric to use to evaluate performance when using Curriculum learning.
 
@@ -148,7 +150,7 @@ class Curriculum(object):
 	def get_generator_function(self):
 		""" Depcreated method to return a generator for the current task. Use :func:`batch_generator` instead. """
 
-		print("WARNING: Curriculum.get_generator_function is deprecated. Use Curriculum.batch_generator instead.")
+		warnings.warn("Curriculum.get_generator_function is deprecated. Use Curriculum.batch_generator instead.", DeprecationWarning)
 		return self.batch_generator()
 
 	def batch_generator(self):
