@@ -25,12 +25,6 @@ jobs:
         TF: [1.13.1, 1.14, 1.15, 2.0, 2.1, 2.2, 2.*]
         exclude:
         - python-version: 2.7
-          TF: 2.*
-        - python-version: 3.5
-          TF: 2.*
-        - python-version: 3.6
-          TF: 2.*
-        - python-version: 2.7
           TF: 2.2
         - python-version: 3.7
           TF: 2.0
@@ -61,7 +55,7 @@ jobs:
         pip install codecov 
     - name: Install package dependencies with TF ${{ matrix.TF }}
       run: |
-        pip install numpy tensorflow==${{ matrix.TF }} 'protobuf<=3.20'
+        pip install 'numpy<1.24' tensorflow==${{ matrix.TF }} 'protobuf<=3.20'
         export PYTHONPATH=$PYTHONPATH:$(pwd)
     - name: Install this package
       run: |
