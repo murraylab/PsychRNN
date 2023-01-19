@@ -146,10 +146,25 @@ class Curriculum(object):
 		return False
 
 	def get_generator_function(self):
-		""" Return the generator function for the current task.
+		""" Depcreated method to return a generator for the current task. Use :func:`batch_generator` instead. """
 
-		Returns:
-			:func:`psychrnn.tasks.task.Task.batch_generator` function: Task batch generator for the task at the current stage.
-		"""
+		print("WARNING: Curriculum.get_generator_function is deprecated. Use Curriculum.batch_generator instead.")
+		return self.batch_generator()
+
+	def batch_generator(self):
+		""" Returns a generator for the current task.
+
+        Returns:
+            Generator[tuple, None, None]: generator iterator for the current task
+
+        Yields:
+            tuple:
+
+            * **stimulus** (*ndarray(dtype=float, shape =(*:attr:`N_batch`, :attr:`N_steps`, :attr:`N_out` *))*): Task stimuli for :attr:`N_batch` trials.
+            * **target_output** (*ndarray(dtype=float, shape =(*:attr:`N_batch`, :attr:`N_steps`, :attr:`N_out` *))*): Target output for the network on :attr:`N_batch` trials given the :data:`stimulus`.
+            * **output_mask** (*ndarray(dtype=bool, shape =(*:attr:`N_batch`, :attr:`N_steps`, :attr:`N_out` *))*): Output mask for :attr:`N_batch` trials. True when the network should aim to match the target output, False when the target output can be ignored.
+            * **trial_params** (*ndarray(dtype=dict, shape =(*:attr:`N_batch` *,))*): Array of dictionaries containing the trial parameters produced by :func:`generate_trial_params` for each trial in :attr:`N_batch`.
+        
+        """
 		return self.tasks[self.stage].batch_generator()
 
