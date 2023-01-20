@@ -8,4 +8,4 @@ def test_get_generator_function_deprecation(capfd):
 	curriculum = Curriculum(pds)
 	curriculum.get_generator_function()
 	out, err = capfd.readouterr()
-	assert 'Curriculum.batch_generator' in out
+	assert 'Curriculum.batch_generator' in err
