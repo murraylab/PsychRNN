@@ -552,29 +552,38 @@ class RNN(ABC):
             performance = performance_cutoff - 1
 
         while (epoch - 1) * batch_size < training_iters and (performance_cutoff is None or performance < performance_cutoff):
-            batch_x, batch_y, output_mask, _ = next(trial_batch_generator)
-            self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
-            # --------------------------------------------------
-            # Output batch loss
-            # --------------------------------------------------
-            if epoch % loss_epoch == 0:
-                reg_loss = self.sess.run(self.reg_loss,
-                                feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: output_mask})
-                losses.append(reg_loss)
-                if verbosity:
-                    print("Iter " + str(epoch * batch_size) + ", Minibatch Loss= " + \
-                          "{:.6f}".format(reg_loss))
+            # for use in curriculum step
+            trial_batch, trial_y, output_mask, _ = next(trial_batch_generator)
+            # for use in training and loss step
+            batch_x, batch_y, batch_mask, _ = next(trial_batch_generator)
 
             # --------------------------------------------------
             # Allow for curriculum learning
             # --------------------------------------------------
             if curriculum is not None and epoch % curriculum.metric_epoch == 0:
-                trial_batch, trial_y, output_mask, _ = next(trial_batch_generator)
+                print("curriculum ", end="")
                 output, _ = self.test(trial_batch)
                 if curriculum.metric_test(trial_batch, trial_y, output_mask, output, epoch, losses, verbosity):
                     if curriculum.stop_training:
                         break
                     trial_batch_generator = curriculum.get_generator_function()
+
+            # --------------------------------------------------
+            # Update Weights After Checking if Curriculum Passes
+            # --------------------------------------------------
+            print("loss / training ", end = "")
+            self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: batch_mask})
+
+            # --------------------------------------------------
+            # Output batch loss
+            # --------------------------------------------------
+            if epoch % loss_epoch == 0:
+                reg_loss = self.sess.run(self.reg_loss,
+                                feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: batch_mask})
+                losses.append(reg_loss)
+                if verbosity:
+                    print("Iter " + str(epoch * batch_size) + ", Minibatch Loss= " + \
+                          "{:.6f}".format(reg_loss))
 
             # --------------------------------------------------
             # Save intermediary weights
