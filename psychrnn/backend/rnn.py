@@ -561,7 +561,6 @@ class RNN(ABC):
             # Allow for curriculum learning
             # --------------------------------------------------
             if curriculum is not None and epoch % curriculum.metric_epoch == 0:
-                print("curriculum ", end="")
                 output, _ = self.test(trial_batch)
                 if curriculum.metric_test(trial_batch, trial_y, output_mask, output, epoch, losses, self, verbosity):
                     if curriculum.stop_training:
@@ -571,7 +570,6 @@ class RNN(ABC):
             # --------------------------------------------------
             # Update Weights After Checking if Curriculum Passes
             # --------------------------------------------------
-            print("loss / training ", end = "")
             self.sess.run(optimize, feed_dict={self.x: batch_x, self.y: batch_y, self.output_mask: batch_mask})
 
             # --------------------------------------------------
