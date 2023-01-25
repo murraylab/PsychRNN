@@ -115,7 +115,7 @@ class Curriculum(object):
 			if path.dirname(self.output_file) != "" and not path.exists(path.dirname(self.output_file)):
 				makedirs(path.dirname(self.output_file))
 	
-	def metric_test(self, input_data, correct_output, output_mask, test_output, epoch, losses, verbosity = False):
+	def metric_test(self, input_data, correct_output, output_mask, test_output, epoch, losses, model, verbosity = False):
 		"""Evaluates whether to advance the stage to the next task or not.
 
 		Arguments:
@@ -130,7 +130,7 @@ class Curriculum(object):
 		Returns:
 			True if stage advances, False otherwise.
 		"""
-		advance, metric_value = self.metric(self.__dict__, input_data, correct_output, output_mask, test_output, epoch, losses, verbosity)
+		advance, metric_value = self.metric(self.__dict__, input_data, correct_output, output_mask, test_output, epoch, losses,model, verbosity)
 		self.metric_values.append([metric_value, self.stage])
 		if advance:
 			self.stage+=1

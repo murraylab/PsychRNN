@@ -563,7 +563,7 @@ class RNN(ABC):
             if curriculum is not None and epoch % curriculum.metric_epoch == 0:
                 print("curriculum ", end="")
                 output, _ = self.test(trial_batch)
-                if curriculum.metric_test(trial_batch, trial_y, output_mask, output, epoch, losses, verbosity):
+                if curriculum.metric_test(trial_batch, trial_y, output_mask, output, epoch, losses, self, verbosity):
                     if curriculum.stop_training:
                         break
                     trial_batch_generator = curriculum.get_generator_function()
