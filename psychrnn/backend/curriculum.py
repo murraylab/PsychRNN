@@ -90,13 +90,16 @@ class Curriculum(object):
 	def safe_save(output_file,metric_values):
 		success=False
 		tries = 0
+		np.save(output_file, metric_values)
 		while not success:
 			try:
-				np.load(output_file, metric_values)
+				np.load(output_file, allow_pickle=True)
 				success=True
-			except:
+			except Exception as e:
 				tries+=1
 				print("saving failed, time: ", tries)
+				print(e)
+				np.save(output_file, metric_values)
 
 	def __init__(self, tasks, **kwargs):
 		self.stop_training = False
