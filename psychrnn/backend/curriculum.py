@@ -87,6 +87,17 @@ class Curriculum(object):
 		output_file (str): Optional path for saving out the metric value and stage. If the .npz filename extension is not included, it will be appended. Default: None.
 
 	"""
+	def safe_save(output_file,metric_values):
+		success=False
+		tries = 0
+		while not success:
+			try:
+				np.load(output_file, metric_values)
+				success=True
+			except:
+				tries+=1
+				print("saving failed, time: ", tries)
+
 	def __init__(self, tasks, **kwargs):
 		self.stop_training = False
 		self.stage = 0
@@ -137,7 +148,7 @@ class Curriculum(object):
 			if self.stage == len(self.tasks):
 				self.stop_training = True
 				if self.output_file is not None:
-					np.save(self.output_file, self.metric_values)
+					safe_save(self.output_file, self.metric_values)
 					if verbosity:
 						print("Metric values saved in file: %s" % self.output_file)
 			if verbosity:
