@@ -4,6 +4,20 @@ from __future__ import print_function
 from os import makedirs, path
 import numpy as np
 
+def safe_save(output_file,metric_values):
+		success=False
+		tries = 0
+		np.save(output_file, metric_values)
+		while not success:
+			try:
+				np.load(output_file, allow_pickle=True)
+				success=True
+			except Exception as e:
+				tries+=1
+				print("saving failed, time: ", tries)
+				print(e)
+				np.save(output_file, metric_values)
+
 def default_metric(curriculum_params, input_data, correct_output, output_mask, output, epoch, losses, verbosity):
 	""" Default metric to use to evaluate performance when using Curriculum learning.
 
@@ -87,19 +101,6 @@ class Curriculum(object):
 		output_file (str): Optional path for saving out the metric value and stage. If the .npz filename extension is not included, it will be appended. Default: None.
 
 	"""
-	def safe_save(output_file,metric_values):
-		success=False
-		tries = 0
-		np.save(output_file, metric_values)
-		while not success:
-			try:
-				np.load(output_file, allow_pickle=True)
-				success=True
-			except Exception as e:
-				tries+=1
-				print("saving failed, time: ", tries)
-				print(e)
-				np.save(output_file, metric_values)
 
 	def __init__(self, tasks, **kwargs):
 		self.stop_training = False
