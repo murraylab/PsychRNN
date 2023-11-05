@@ -1,4 +1,5 @@
 sphinx>=3.0.4
+sphinx_rtd_theme==1.1.1
 ipykernel
 nbsphinx
 sphinx_copybutton
