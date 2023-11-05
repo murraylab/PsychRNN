@@ -43,7 +43,7 @@ extensions = [
   'sphinx.ext.mathjax',
   'sphinx_copybutton',
   "sphinx_rtd_theme",
-  'sphinxcontrib.napoleon',
+  'sphinx.ext.napoleon',
   'autodocsumm',
 ]
 
